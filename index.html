@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f7f2e8;
+    --bg2: #ede5d5;
+    --accent: #7a4828;
+    --accent2: #c4783a;
+    --gold: #d4603a;
+    --text: #2c1a0a;
+    --text-dim: #7a5c3a;
+    --card-bg: #ede5d5;
+    --folder1: #7a4828;
+    --folder2: #c4783a;
+    --folder3: #5a7840;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── HOME BUTTON ── */
+  #home-btn {
+    position: fixed;
+    top: 1.2rem;
+    left: 1.4rem;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(237,229,213,0.9);
+    border: 1px solid rgba(122,72,40,0.25);
+    color: var(--accent);
+    padding: 0.45rem 1rem 0.45rem 0.8rem;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+    box-shadow: 0 2px 12px rgba(122,72,40,0.1);
+  }
+  #home-btn:hover { background: rgba(122,72,40,0.1); border-color: var(--accent); color: var(--text); }
+  #home-btn.visible { display: flex; }
+
+  /* ── WELCOME ── */
+  #welcome {
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #e8d8c0 0%, #f7f2e8 70%);
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #welcome::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(196,120,58,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 4s ease-in-out infinite;
+  }
+  #welcome::after {
+    content: '';
+    position: absolute;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(122,72,40,0.06) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: pulse 6s ease-in-out infinite reverse;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 0.5; }
+    50%      { transform: scale(1.2); opacity: 1; }
+  }
+  .welcome-badge {
+    display: inline-block;
+    background: rgba(122,72,40,0.1);
+    border: 1px solid rgba(122,72,40,0.25);
+    color: var(--accent);
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .welcome-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, #2c1a0a 0%, #7a4828 45%, #c4783a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .welcome-sub {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin-bottom: 3rem;
+    line-height: 1.75;
+    position: relative; z-index: 1;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff8f0;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative; z-index: 1;
+    box-shadow: 0 4px 20px rgba(122,72,40,0.3);
+    letter-spacing: 0.03em;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,120,58,0.4); }
+
+  /* ── EXPLORER ── */
+  #explorer {
+    align-items: center;
+    padding: 3rem 2rem;
+    background: radial-gradient(ellipse at top, #ede5d5 0%, #f7f2e8 60%);
+  }
+  .explorer-header { text-align: center; margin-bottom: 4rem; }
+  .explorer-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .explorer-header p { color: var(--text-dim); font-style: italic; }
+
+  .folders-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .folder-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 280px;
+    max-width: 340px;
+  }
+  .folder {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: default;
+    transition: all 0.3s;
+    border: 1px solid rgba(122,72,40,0.12);
+    box-shadow: 0 2px 12px rgba(122,72,40,0.08);
+    text-align: center;
+  }
+  .folder-wrapper:hover .folder { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(122,72,40,0.14); }
+  .folder-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .folder-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .folder-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; font-style: italic; }
+  .folder-1 { border-top: 3px solid var(--folder1); }
+  .folder-2 { border-top: 3px solid var(--folder2); }
+  .folder-3 { border-top: 3px solid var(--folder3); }
+
+  .cards-popup {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    width: 310px;
+    background: #f7f2e8;
+    border-radius: 16px;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    border: 1px solid rgba(122,72,40,0.18);
+    box-shadow: 0 20px 60px rgba(122,72,40,0.18);
+    z-index: 200;
+  }
+  .folder-wrapper:hover .cards-popup {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+  .cards-popup-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(122,72,40,0.12);
+  }
+  .game-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 0.5rem;
+  }
+  .game-card:last-child { margin-bottom: 0; }
+  .game-card:hover { background: rgba(122,72,40,0.07); }
+  .game-card-icon { font-size: 1.8rem; min-width: 2.5rem; text-align: center; }
+  .game-card-info h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .game-card-info p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; font-style: italic; }
+
+  /* ── GAME SCREEN ── */
+  #game-screen {
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--bg);
+    flex-direction: column;
+  }
+  .game-container { width: 100%; max-width: 700px; text-align: center; }
+  .game-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    align-self: flex-start;
+  }
+  .game-back:hover { color: var(--accent); }
+
+  /* ── RESULT SCREEN ── */
+  #result-screen {
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--bg);
+    flex-direction: column;
+  }
+  .result-container { max-width: 680px; width: 100%; text-align: center; }
+
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: left;
+    border: 1px solid rgba(122,72,40,0.18);
+    box-shadow: 0 2px 12px rgba(122,72,40,0.08);
+  }
+  .concept-badge {
+    display: inline-block;
+    background: rgba(196,120,58,0.15);
+    color: var(--accent);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .concept-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .concept-body { color: var(--text-dim); line-height: 1.85; font-size: 0.95rem; font-style: italic; }
+  .concept-body strong { color: var(--text); font-style: normal; }
+  .concept-body em { color: var(--accent2); font-style: italic; }
+
+  /* ── SHARED GAME ELEMENTS ── */
+  .game-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .game-subtitle { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6; font-style: italic; }
+
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+  .option-btn {
+    background: var(--card-bg);
+    border: 1px solid rgba(122,72,40,0.15);
+    color: var(--text);
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .option-btn:hover { background: rgba(122,72,40,0.1); border-color: var(--accent); transform: translateY(-2px); }
+  .option-btn.correct { background: rgba(90,120,64,0.2); border-color: #5a7840; }
+  .option-btn.wrong   { background: rgba(200,80,60,0.15); border-color: #c8503c; }
+
+  .timer-bar { width: 100%; height: 6px; background: rgba(122,72,40,0.1); border-radius: 3px; margin-bottom: 1.5rem; overflow: hidden; }
+  .timer-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width 0.1s linear; }
+
+  .progress-text { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-dim); margin-bottom: 0.5rem; }
+
+  .study-list { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin: 1.5rem 0; }
+  .study-word {
+    background: #f7f2e8;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(122,72,40,0.15);
+    letter-spacing: 0.04em;
+  }
+  .study-word.highlight { background: rgba(196,120,58,0.18); border-color: var(--accent2); color: var(--accent); }
+
+  .room-display { border-radius: 20px; padding: 2rem; margin: 1.5rem 0; transition: all 0.5s; }
+  .room-a { background: linear-gradient(135deg, #e8dfc8, #d8ceac); border: 2px solid #7a4828; }
+  .room-b { background: linear-gradient(135deg, #e8d4c0, #d8bfa8); border: 2px solid #c4783a; }
+  .room-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+
+  .input-field {
+    background: #f7f2e8;
+    border: 2px solid rgba(122,72,40,0.2);
+    color: var(--text);
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+    text-align: center;
+    outline: none;
+    letter-spacing: 0.04em;
+  }
+  .input-field:focus { border-color: var(--accent); }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(122,72,40,0.25);
+    color: var(--text);
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(122,72,40,0.08); border-color: var(--accent); }
+
+  .phase-indicator { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+  .phase-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(122,72,40,0.15); transition: all 0.3s; }
+  .phase-dot.active { background: var(--accent2); box-shadow: 0 0 8px rgba(196,120,58,0.4); width: 24px; border-radius: 4px; }
+  .phase-dot.done { background: rgba(196,120,58,0.4); }
+
+  .recognition-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.5rem; margin: 1.5rem 0; }
+  @media (max-width: 500px) { .recognition-grid { grid-template-columns: repeat(3,1fr); } }
+  .recog-btn {
+    background: #f7f2e8;
+    border: 2px solid rgba(122,72,40,0.15);
+    color: var(--text);
+    padding: 0.7rem 0.5rem;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .recog-btn:hover { background: rgba(122,72,40,0.08); border-color: var(--accent); }
+  .recog-btn.selected { background: rgba(196,120,58,0.2); border-color: var(--accent2); }
+  .recog-btn.hit  { background: rgba(90,120,64,0.2); border-color: #5a7840; }
+  .recog-btn.fa   { background: rgba(200,80,60,0.15); border-color: #c8503c; }
+  .recog-btn.miss { background: rgba(196,120,58,0.12); border-color: var(--gold); }
+
+  .lexical-word {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin: 1rem 0 2rem;
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+  }
+  .lexical-btns { display: flex; gap: 1rem; justify-content: center; }
+  .lex-btn {
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .lex-btn-word    { background: rgba(90,120,64,0.15); border-color: #5a7840; color: #3d5a28; }
+  .lex-btn-word:hover { background: rgba(90,120,64,0.3); }
+  .lex-btn-nonword { background: rgba(200,80,60,0.12); border-color: #c8503c; color: #8a3020; }
+  .lex-btn-nonword:hover { background: rgba(200,80,60,0.25); }
+
+  .feedback-flash { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; min-height: 2rem; margin-bottom: 0.5rem; }
+  .correct-flash { color: #5a7840; }
+  .wrong-flash   { color: #c8503c; }
+
+  .statement-card {
+    background: #f7f2e8;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    border: 1px solid rgba(122,72,40,0.12);
+    text-align: left;
+    font-style: italic;
+  }
+  .truth-slider { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .truth-btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(122,72,40,0.2);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    font-style: normal;
+  }
+  .truth-btn:hover, .truth-btn.selected { background: rgba(196,120,58,0.18); border-color: var(--accent2); }
+
+  .results-breakdown { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; justify-content: center; }
+  .stat-box { background: var(--card-bg); border-radius: 12px; padding: 1rem 1.5rem; min-width: 120px; text-align: center; border: 1px solid rgba(122,72,40,0.12); }
+  .stat-value { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent2); }
+  .stat-label { font-family: 'Syne', sans-serif; font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.05em; margin-top: 0.25rem; }
+
+  .completion-emoji { font-size: 4rem; margin-bottom: 1rem; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeIn 0.5s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- HOME BUTTON (fixed, shown on all non-welcome screens) -->
+<button id="home-btn" onclick="goHome()">🌿 Home</button>
+
+<!-- WELCOME SCREEN -->
+<div id="welcome" class="screen active">
+  <div class="welcome-badge">🌱 A Working Memory Project</div>
+  <h1 class="welcome-title">Memory Lab</h1>
+  <p class="welcome-sub">
+    Explore the hidden mechanics of your own memory through six interactive experiments.
+    Each game reveals a real psychological phenomenon — happening in your brain right now.
+  </p>
+  <button class="btn-primary" onclick="showScreen('explorer')">Open the Lab →</button>
+</div>
+
+<!-- EXPLORER SCREEN -->
+<div id="explorer" class="screen">
+  <div class="explorer-header animate-in">
+    <h1>🌿 Let's Explore Your Memory</h1>
+    <p>Hover over a folder to see the experiments inside</p>
+  </div>
+
+  <div class="folders-container">
+
+    <!-- Folder 1 -->
+    <div class="folder-wrapper">
+      <div class="folder folder-1">
+        <div class="folder-icon">🔗</div>
+        <div class="folder-title">Recall &amp; Recognition</div>
+        <div class="folder-desc">How your brain stores and retrieves information — and why some paths are easier than others.</div>
+      </div>
+      <div class="cards-popup">
+        <div class="cards-popup-title">2 experiments inside</div>
+        <div class="game-card" onclick="startGame('word-web')">
+          <div class="game-card-icon">🕸️</div>
+          <div class="game-card-info">
+            <h4>Word Web</h4>
+            <p>Activate a network of connected concepts and discover spreading activation</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="startGame('recall-recog')">
+          <div class="game-card-icon">🃏</div>
+          <div class="game-card-info">
+            <h4>Recall vs. Recognition</h4>
+            <p>Experience why one type of memory test is dramatically harder than the other</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Folder 2 -->
+    <div class="folder-wrapper">
+      <div class="folder folder-2">
+        <div class="folder-icon">🏛️</div>
+        <div class="folder-title">Context &amp; Encoding</div>
+        <div class="folder-desc">How your environment and learning conditions shape what you can remember later.</div>
+      </div>
+      <div class="cards-popup">
+        <div class="cards-popup-title">2 experiments inside</div>
+        <div class="game-card" onclick="startGame('room-shift')">
+          <div class="game-card-icon">🚪</div>
+          <div class="game-card-info">
+            <h4>The Room Shift</h4>
+            <p>Learn in one environment, test in another — see if context really matters</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="startGame('encoding-cues')">
+          <div class="game-card-icon">🔑</div>
+          <div class="game-card-info">
+            <h4>Cue &amp; Retrieve</h4>
+            <p>Discover how cues learned alongside information unlock your memories</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Folder 3 -->
+    <div class="folder-wrapper">
+      <div class="folder folder-3">
+        <div class="folder-icon">👁️</div>
+        <div class="folder-title">Implicit Memory</div>
+        <div class="folder-desc">Memory that operates beneath conscious awareness — shaping your choices without you knowing.</div>
+      </div>
+      <div class="cards-popup">
+        <div class="cards-popup-title">2 experiments inside</div>
+        <div class="game-card" onclick="startGame('lexical-decision')">
+          <div class="game-card-icon">⚡</div>
+          <div class="game-card-info">
+            <h4>Lexical Decision</h4>
+            <p>React to words as fast as you can — and discover how priming speeds you up</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="startGame('illusion-truth')">
+          <div class="game-card-icon">🪄</div>
+          <div class="game-card-info">
+            <h4>Illusion of Truth</h4>
+            <p>Rate statements for truth — and reveal how familiarity makes false claims feel true</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="screen">
+  <button class="game-back" onclick="showScreen('explorer')">← Back to folders</button>
+  <div class="game-container" id="game-container"></div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result-screen" class="screen">
+  <div class="result-container animate-in" id="result-container"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+// SCREEN MANAGER
+// ════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  const homeBtn = document.getElementById('home-btn');
+  if (id === 'welcome') homeBtn.classList.remove('visible');
+  else homeBtn.classList.add('visible');
+}
+
+function goHome() {
+  showScreen('welcome');
+}
+
+// ════════════════════════════════════════════════════
+// GAME DATA
+// ════════════════════════════════════════════════════
+const GAMES = {
+  'word-web': {
+    title: 'Word Web',
+    concept: 'spreading-activation',
+    data: {
+      center: 'BREAD',
+      related: ['TOAST','BUTTER','WHEAT','OVEN','FLOUR','SANDWICH'],
+      unrelated: ['ROCKET','ALGEBRA','GLACIER','TRUMPET']
+    }
+  },
+  'recall-recog': {
+    title: 'Recall vs. Recognition',
+    concept: 'recall-vs-recognition',
+    data: {
+      studyWords:  ['CASTLE','MIRROR','HONEY','LANTERN','BRIDGE','VELVET','CANDLE','FOREST'],
+      distractors: ['PALACE','WINDOW','SUGAR','TORCH','TUNNEL','SILK','LAMP','JUNGLE']
+    }
+  },
+  'room-shift': {
+    title: 'The Room Shift',
+    concept: 'context-dependent',
+    data: { studyWords: ['ANCHOR','LEMON','TROPHY','COMPASS','BARREL','RIBBON','SKETCH','GOBLET'] }
+  },
+  'encoding-cues': {
+    title: 'Cue & Retrieve',
+    concept: 'encoding-specificity',
+    data: {
+      pairs: [
+        { cue:'OCEAN',  target:'WAVE'  },
+        { cue:'DARK',   target:'MOON'  },
+        { cue:'COLD',   target:'SNOW'  },
+        { cue:'LOUD',   target:'DRUM'  },
+        { cue:'SWEET',  target:'CAKE'  },
+        { cue:'SHARP',  target:'BLADE' }
+      ]
+    }
+  },
+  'lexical-decision': {
+    title: 'Lexical Decision',
+    concept: 'priming-implicit',
+    data: {
+      primed:           ['DOCTOR','NURSE','HOSPITAL'],
+      relatedTargets:   ['MEDICINE','PATIENT','HEALTH'],
+      unrelatedTargets: ['GUITAR','PLANET','BUCKET'],
+      nonwords:         ['FRUMBLE','SNORTLE','VEXION','BLARDGE','FLUNKET','ZORBISH']
+    }
+  },
+  'illusion-truth': {
+    title: 'Illusion of Truth',
+    concept: 'illusion-truth',
+    data: {
+      statements: [
+        { text:"The Great Wall of China is visible from space with the naked eye.", truth:false },
+        { text:"Humans use only 10% of their brain.", truth:false },
+        { text:"Goldfish have a memory span of three seconds.", truth:false },
+        { text:"Napoleon Bonaparte was unusually short for his time.", truth:false },
+        { text:"Lightning never strikes the same place twice.", truth:false },
+        { text:"Your heart stops beating when you sneeze.", truth:false }
+      ],
+      repeatedIdx: [1,3]
+    }
+  }
+};
+
+const CONCEPTS = {
+  'spreading-activation': {
+    badge: 'Spreading Activation',
+    title: 'Your Brain Pre-Activated Related Concepts',
+    body: `When you saw <strong>BREAD</strong>, your brain didn't just recognise it in isolation. It sent activation rippling through your entire mental network — automatically "pre-loading" related concepts like TOAST, BUTTER, and FLOUR.<br><br>
+    This is <strong>Spreading Activation</strong>. Memory is organised as a vast network of nodes (ideas) connected by associative links. When one node fires, activation spreads to neighbouring nodes — just like neurons triggering action potentials.<br><br>
+    This is exactly why <em>hints</em> help you remember: they activate a nearby node, which spreads activation toward the target memory you're trying to reach.`
+  },
+  'recall-vs-recognition': {
+    badge: 'Recall vs. Recognition',
+    title: "Recognition Is Easier — Here's Why",
+    body: `You probably found the <strong>recall phase harder</strong>. This is one of the most reliable findings in memory research.<br><br>
+    <strong>Recall</strong> requires you to generate the memory from scratch — like searching a library with no catalogue. <strong>Recognition</strong> just needs a familiarity judgement — the answer is right there and your brain only needs to say "yes, I've seen this."<br><br>
+    Both involve the same stored memories, but use different <em>retrieval paths</em>. Recognition provides a direct, strong cue pointing straight to the memory node. Recall forces you to navigate the network from a much more distant starting point.`
+  },
+  'context-dependent': {
+    badge: 'Context-Dependent Learning',
+    title: 'Your Environment Is Part of Your Memory',
+    body: `Memory isn't stored in isolation — it's encoded <em>together with its context</em>. The sights, sounds, and even smells of where you studied become tangled up with the material itself.<br><br>
+    This is <strong>Context-Dependent Learning</strong>. When you return to the same context during testing, those environmental cues act as retrieval prompts — activating the memory network more efficiently. A different room removes those cues.<br><br>
+    Practical implication: <em>studying and testing in the same room</em> gives you a memory advantage. It's also why "state-dependent memory" exists — your internal state (tired, caffeinated, anxious) is encoded as part of the memory trace too.`
+  },
+  'encoding-specificity': {
+    badge: 'Encoding Specificity',
+    title: 'Cues Only Work If They Match What You Stored',
+    body: `When you learned WAVE alongside the cue OCEAN, you didn't just encode "WAVE" — you encoded the entire <strong>OCEAN → WAVE</strong> relationship. The cue becomes woven into the memory trace itself.<br><br>
+    This is the <strong>Encoding Specificity Principle</strong>: cues are only effective if they are <em>congruent</em> with what was present during encoding. A mismatched cue fails because it wasn't part of the original memory trace — it has no connection to that node in the network.<br><br>
+    Brain imaging confirms this: neural patterns active during <em>successful retrieval overlap</em> with those active during the original learning experience.`
+  },
+  'priming-implicit': {
+    badge: 'Priming & Implicit Memory',
+    title: 'Your Brain Was Secretly Prepared',
+    body: `At the start of the task, you briefly saw words like DOCTOR, NURSE, and HOSPITAL. Those words pre-activated a semantic cluster in your memory network.<br><br>
+    This is <strong>Semantic Priming</strong>. When related words (MEDICINE, PATIENT) appeared in the main task, your brain processed them faster because their nodes were already partially activated — making the decision easier.<br><br>
+    This operates through <strong>implicit memory</strong> — memory without awareness. You didn't consciously recall those priming words, yet they influenced your behaviour. The lexical decision task is used in research precisely because it reveals memory traces people have no conscious access to.`
+  },
+  'illusion-truth': {
+    badge: 'Illusion of Truth',
+    title: 'Familiarity Feels Like Truth',
+    body: `Some statements appeared twice — once during reading, once during rating. Research consistently finds that <strong>repeated statements are rated as more true</strong>, even when false — and even when people are explicitly warned about the effect.<br><br>
+    This is the <strong>Illusion of Truth Effect</strong>. Seeing a statement twice increases its <em>processing fluency</em> — it feels easier to process, and our brains interpret that ease as a signal of credibility.<br><br>
+    Real-world implications: this mechanism underlies misinformation, propaganda, and why repeated political slogans shift beliefs regardless of accuracy. You experienced exactly why "repeat a lie often enough" works — not because we forget it's false, but because <em>familiarity itself generates a feeling of truth</em>.`
+  }
+};
+
+// ════════════════════════════════════════════════════
+// GAME STATE & LAUNCHER
+// ════════════════════════════════════════════════════
+let gs = {};
+
+function startGame(gameId) {
+  gs = { gameId, data: GAMES[gameId].data };
+  showScreen('game-screen');
+  ({ 'word-web': renderWordWeb, 'recall-recog': renderRecallRecog,
+     'room-shift': renderRoomShift, 'encoding-cues': renderEncodingCues,
+     'lexical-decision': renderLexicalDecision, 'illusion-truth': renderIllusionTruth })[gameId]();
+}
+
+function gc() { return document.getElementById('game-container'); }
+
+// ════════════════════════════════════════════════════
+// GAME 1 — WORD WEB
+// ════════════════════════════════════════════════════
+function renderWordWeb() {
+  const { center, related, unrelated } = gs.data;
+  const nodes = [...related.slice(0,4), ...unrelated.slice(0,4)].sort(() => Math.random()-0.5);
+  gs.webNodes = nodes;
+  gs.webRelated = new Set(related);
+  gs.activated = new Set();
+  gs.clicks = 0;
+  gs.relatedFound = 0;
+  const MAX = 6;
+
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="game-title">🕸️ Word Web</div>
+      <div class="game-subtitle">The center word is shown. Click the words you think are <strong>most strongly associated</strong> with it. You get ${MAX} clicks.</div>
+      <div style="position:relative;width:320px;height:320px;margin:0 auto 1.5rem;">
+        <canvas id="wc" width="320" height="320" style="position:absolute;top:0;left:0;"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:var(--accent2);color:#fff8f0;font-family:'Syne',sans-serif;font-weight:800;font-size:0.9rem;display:flex;align-items:center;justify-content:center;z-index:3;text-align:center;">${center}</div>
+        <div id="outer-nodes"></div>
+      </div>
+      <div id="ww-fb" style="font-size:1rem;min-height:1.5rem;margin-bottom:0.5rem;font-style:italic;"></div>
+      <div class="progress-text" id="ww-prog">${MAX} clicks remaining</div>
+    </div>`;
+
+  const outerDiv = document.getElementById('outer-nodes');
+  const cx=160, cy=160, r=120;
+  nodes.forEach((word, i) => {
+    const angle = (i/nodes.length)*2*Math.PI - Math.PI/2;
+    const x = cx + r*Math.cos(angle), y = cy + r*Math.sin(angle);
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;width:60px;height:60px;border-radius:50%;background:#f7f2e8;border:2px solid rgba(122,72,40,0.2);color:var(--text);font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:600;display:flex;align-items:center;justify-content:center;z-index:3;text-align:center;cursor:pointer;transition:all 0.4s;left:${x-30}px;top:${y-30}px;letter-spacing:0.03em;`;
+    el.textContent = word;
+    el.onclick = () => clickWWNode(el, word);
+    outerDiv.appendChild(el);
+  });
+  drawWWLines();
+}
+
+function drawWWLines() {
+  const canvas = document.getElementById('wc');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,320,320);
+  const cx=160, cy=160, r=120;
+  gs.webNodes.forEach((word, i) => {
+    const angle = (i/gs.webNodes.length)*2*Math.PI - Math.PI/2;
+    const x = cx+r*Math.cos(angle), y = cy+r*Math.sin(angle);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y);
+    ctx.strokeStyle = gs.activated.has(word) ? 'rgba(196,120,58,0.55)' : 'rgba(122,72,40,0.1)';
+    ctx.lineWidth = gs.activated.has(word) ? 2.5 : 1;
+    ctx.stroke();
+  });
+}
+
+function clickWWNode(el, word) {
+  if (gs.activated.has(word) || gs.clicks >= 6) return;
+  gs.activated.add(word); gs.clicks++;
+  const isRelated = gs.webRelated.has(word);
+  if (isRelated) {
+    el.style.background = 'rgba(196,120,58,0.2)'; el.style.borderColor='#c4783a';
+    el.style.boxShadow = '0 0 20px rgba(196,120,58,0.3)'; el.style.transform='scale(1.1)';
+    document.getElementById('ww-fb').innerHTML = `<span style="color:#7a4828">✓ "${word}" — strongly connected!</span>`;
+    gs.relatedFound++;
+  } else {
+    el.style.background='rgba(100,100,100,0.25)'; el.style.borderColor='rgba(255,255,255,0.15)';
+    document.getElementById('ww-fb').innerHTML = `<span style="color:var(--text-dim)">"${word}" — weaker association</span>`;
+  }
+  drawWWLines();
+  const rem = 6 - gs.clicks;
+  document.getElementById('ww-prog').textContent = rem > 0 ? `${rem} clicks remaining` : '';
+  if (gs.clicks >= 6) setTimeout(() => endGame('word-web', { found: gs.relatedFound, total: 4 }), 700);
+}
+
+// ════════════════════════════════════════════════════
+// GAME 2 — RECALL vs RECOGNITION
+// ════════════════════════════════════════════════════
+function renderRecallRecog() {
+  gs.phase = 0; gs.recalled = []; gs.recognitionSel = new Set();
+  rrPhase();
+}
+
+function rrPhase() {
+  const { studyWords, distractors } = gs.data;
+  const phase = gs.phase;
+
+  if (phase === 0) {
+    let t = 10;
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div><div class="phase-dot"></div></div>
+        <div class="game-title">🃏 Recall vs. Recognition</div>
+        <div class="game-subtitle">Study these 8 words. You have <strong id="rr-t">10</strong> seconds!</div>
+        <div class="study-list">${studyWords.map(w=>`<div class="study-word">${w}</div>`).join('')}</div>
+        <div style="font-size:0.85rem;color:var(--text-dim);font-style:italic;">Memorise as many as you can…</div>
+      </div>`;
+    const iv = setInterval(() => {
+      t--; const el=document.getElementById('rr-t'); if(el) el.textContent=t;
+      if(t<=0){ clearInterval(iv); gs.phase=1; rrPhase(); }
+    }, 1000);
+
+  } else if (phase === 1) {
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div><div class="phase-dot"></div></div>
+        <div class="game-title">Phase 2: Recall</div>
+        <div class="game-subtitle">Type as many words as you remember. Press <strong>Enter</strong> after each one.</div>
+        <input class="input-field" id="rr-in" placeholder="Type a word and press Enter…" autocomplete="off"/>
+        <div id="rr-list" class="study-list" style="min-height:60px;"></div>
+        <br>
+        <button class="btn-primary" onclick="rrToRecog()" style="margin-top:1rem;">I'm done recalling →</button>
+      </div>`;
+    const inp = document.getElementById('rr-in');
+    inp.focus();
+    inp.addEventListener('keydown', e => {
+      if (e.key==='Enter') {
+        const v = e.target.value.trim().toUpperCase();
+        if (v && !gs.recalled.includes(v)) {
+          gs.recalled.push(v);
+          const ok = studyWords.includes(v);
+          document.getElementById('rr-list').innerHTML += `<div class="study-word ${ok?'highlight':''}">${v}</div>`;
+        }
+        e.target.value='';
+      }
+    });
+
+  } else if (phase === 2) {
+    const all = [...studyWords,...distractors].sort(()=>Math.random()-0.5);
+    gs.recogAll = all;
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot done"></div><div class="phase-dot active"></div></div>
+        <div class="game-title">Phase 3: Recognition</div>
+        <div class="game-subtitle">Which of these 16 words did you study? Click all that you recognise.</div>
+        <div class="recognition-grid">${all.map(w=>`<button class="recog-btn" onclick="toggleRecog(this,'${w}')">${w}</button>`).join('')}</div>
+        <button class="btn-primary" onclick="finishRecog()">Submit →</button>
+      </div>`;
+  }
+}
+
+function toggleRecog(el, word) {
+  gs.recognitionSel.has(word) ? (gs.recognitionSel.delete(word), el.classList.remove('selected'))
+                               : (gs.recognitionSel.add(word),    el.classList.add('selected'));
+}
+
+function rrToRecog() {
+  const { studyWords } = gs.data;
+  gs.recallCorrect = gs.recalled.filter(w=>studyWords.includes(w)).length;
+  gs.phase=2; rrPhase();
+}
+
+function finishRecog() {
+  const { studyWords } = gs.data;
+  let hits=0, fa=0;
+  gs.recognitionSel.forEach(w => { studyWords.includes(w) ? hits++ : fa++; });
+  document.querySelectorAll('.recog-btn').forEach(btn => {
+    const w=btn.textContent;
+    if (studyWords.includes(w)) btn.classList.add(gs.recognitionSel.has(w)?'hit':'miss');
+    else if (gs.recognitionSel.has(w)) btn.classList.add('fa');
+  });
+  setTimeout(() => endGame('recall-recog', { recallScore:gs.recallCorrect, recogHits:hits, falseAlarms:fa }), 1200);
+}
+
+// ════════════════════════════════════════════════════
+// GAME 3 — ROOM SHIFT
+// ════════════════════════════════════════════════════
+function renderRoomShift() {
+  gs.phase=0; gs.sameRoom=Math.random()>0.5; gs.roomRecalled=[];
+  rsPhase();
+}
+
+function rsPhase() {
+  const { studyWords } = gs.data;
+  if (gs.phase===0) {
+    let t=12;
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div></div>
+        <div class="game-title">🚪 The Room Shift</div>
+        <div class="room-display room-a">
+          <div class="room-label">🌿 Room A — Forest Study Room</div>
+          <div class="study-list" style="margin:0;">${studyWords.map(w=>`<div class="study-word">${w}</div>`).join('')}</div>
+        </div>
+        <div class="game-subtitle">Memorise these words. You're in the <strong>Forest Room</strong>. <strong id="rs-t">${t}s</strong> remaining.</div>
+      </div>`;
+    const iv = setInterval(() => {
+      t--; const el=document.getElementById('rs-t'); if(el) el.textContent=`${t}s`;
+      if(t<=0){ clearInterval(iv); gs.phase=1; rsPhase(); }
+    }, 1000);
+
+  } else {
+    const rClass = gs.sameRoom ? 'room-a' : 'room-b';
+    const rLabel = gs.sameRoom ? '🌿 Room A — Forest Study Room (same room!)' : '🍂 Room B — Autumn Test Room (different room!)';
+    const rNote  = gs.sameRoom ? "You're back in the same room you studied in." : "You've been moved to a completely different room.";
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div></div>
+        <div class="game-title">Phase 2: Recall</div>
+        <div class="room-display ${rClass}" style="padding:1rem 2rem;margin-bottom:1rem;">
+          <div class="room-label">${rLabel}</div>
+          <div style="font-size:0.85rem;font-style:italic;">${rNote}</div>
+        </div>
+        <div class="game-subtitle">Type as many words as you can remember. Press Enter after each.</div>
+        <input class="input-field" id="rs-in" placeholder="Type a word and press Enter…" autocomplete="off"/>
+        <div id="rs-list" class="study-list" style="min-height:50px;"></div>
+        <br>
+        <button class="btn-primary" onclick="finishRS()">Done →</button>
+      </div>`;
+    const inp=document.getElementById('rs-in'); inp.focus();
+    inp.addEventListener('keydown', e => {
+      if(e.key==='Enter'){
+        const v=e.target.value.trim().toUpperCase();
+        if(v && !gs.roomRecalled.includes(v)){
+          gs.roomRecalled.push(v);
+          document.getElementById('rs-list').innerHTML+=`<div class="study-word ${studyWords.includes(v)?'highlight':''}">${v}</div>`;
+        }
+        e.target.value='';
+      }
+    });
+  }
+}
+
+function finishRS() {
+  const { studyWords } = gs.data;
+  const correct = gs.roomRecalled.filter(w=>studyWords.includes(w)).length;
+  endGame('room-shift', { correct, total:studyWords.length, sameRoom:gs.sameRoom });
+}
+
+// ════════════════════════════════════════════════════
+// GAME 4 — ENCODING CUES
+// ════════════════════════════════════════════════════
+function renderEncodingCues() {
+  gs.phase=0; gs.ecIdx=0; gs.withCueOK=0; gs.noCueOK=0;
+  gs.withCuePairs=[...gs.data.pairs].sort(()=>Math.random()-0.5);
+  gs.noCuePairs  =[...gs.data.pairs].sort(()=>Math.random()-0.5);
+  ecPhase();
+}
+
+function ecPhase() {
+  const { pairs } = gs.data;
+  if (gs.phase===0) {
+    let t=15;
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div><div class="phase-dot"></div></div>
+        <div class="game-title">🔑 Cue &amp; Retrieve</div>
+        <div class="game-subtitle">Study these word <strong>pairs</strong>. Remember both words together! <strong id="ec-t">${t}s</strong></div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;margin:1.5rem 0;">
+          ${pairs.map(p=>`
+            <div style="display:flex;align-items:center;justify-content:center;gap:1rem;background:var(--card-bg);border-radius:10px;padding:0.75rem 1.5rem;border:1px solid rgba(122,184,138,0.08);">
+              <span style="color:var(--text-dim);font-size:1rem;font-weight:600;min-width:70px;text-align:right;font-style:italic;">${p.cue}</span>
+              <span style="color:rgba(255,255,255,0.25);font-size:1.2rem;">→</span>
+              <span style="color:var(--gold);font-size:1rem;font-weight:700;min-width:70px;font-family:'Syne',sans-serif;">${p.target}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    const iv=setInterval(()=>{ t--; const el=document.getElementById('ec-t'); if(el)el.textContent=`${t}s`; if(t<=0){clearInterval(iv);gs.phase=1;gs.ecIdx=0;ecPhase();} },1000);
+
+  } else {
+    const withCue = gs.phase===1;
+    const list = withCue ? gs.withCuePairs : gs.noCuePairs;
+    if (gs.ecIdx >= list.length) {
+      if (gs.phase===1){ gs.phase=2; gs.ecIdx=0; ecPhase(); } else { endGame('encoding-cues',{withCue:gs.withCueOK,noCue:gs.noCueOK,total:pairs.length}); }
+      return;
+    }
+    const pair = list[gs.ecIdx];
+    const opts = genOpts(pair.target, pairs.map(p=>p.target));
+    gc().innerHTML = `
+      <div class="animate-in">
+        <div class="phase-indicator">
+          <div class="phase-dot done"></div>
+          <div class="phase-dot ${gs.phase===1?'active':'done'}"></div>
+          <div class="phase-dot ${gs.phase===2?'active':''}"></div>
+        </div>
+        <div class="game-title">${withCue?'Phase 2: With Cue':'Phase 3: Without Cue'}</div>
+        <div class="game-subtitle">${withCue
+          ? `Given the <strong>original cue</strong> — what was the paired word?`
+          : `No cue this time. What was the word that completed this pair?`}</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;margin:2rem 0;color:var(--text-dim);">
+          ${withCue ? `${pair.cue} → <span style="color:var(--gold)">???</span>` : `??? → <span style="color:rgba(255,255,255,0.25)">????</span>`}
+        </div>
+        <div class="options-grid">${opts.map(o=>`<button class="option-btn" onclick="ecAnswer('${o}','${pair.target}')">${o}</button>`).join('')}</div>
+        <div class="progress-text">${gs.ecIdx+1} / ${list.length}</div>
+      </div>`;
+  }
+}
+
+function genOpts(correct, allTargets) {
+  const others = allTargets.filter(t=>t!==correct).sort(()=>Math.random()-0.5).slice(0,3);
+  return [correct,...others].sort(()=>Math.random()-0.5);
+}
+
+function ecAnswer(chosen, correct) {
+  if (gs.phase===1 && chosen===correct) gs.withCueOK++;
+  if (gs.phase===2 && chosen===correct) gs.noCueOK++;
+  document.querySelectorAll('.option-btn').forEach(b=>{
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b.textContent===chosen) b.classList.add('wrong');
+  });
+  gs.ecIdx++;
+  setTimeout(ecPhase, 600);
+}
+
+// ════════════════════════════════════════════════════
+// GAME 5 — LEXICAL DECISION
+// ════════════════════════════════════════════════════
+function renderLexicalDecision() {
+  const { primed, relatedTargets, unrelatedTargets, nonwords } = gs.data;
+  gs.ldSeq = [
+    ...relatedTargets.map(w=>({word:w,isWord:true,primed:true})),
+    ...unrelatedTargets.map(w=>({word:w,isWord:true,primed:false})),
+    ...nonwords.map(w=>({word:w,isWord:false,primed:false}))
+  ].sort(()=>Math.random()-0.5);
+  gs.ldIdx=0; gs.ldResults=[]; gs.ldT={};
+
+  gc().innerHTML = `
+    <div class="animate-in" style="text-align:center;">
+      <div class="game-title">⚡ Lexical Decision</div>
+      <div class="game-subtitle">You'll briefly see some words. Then for each item shown, press <strong style="color:#7ab88a">WORD</strong> or <strong style="color:#d4826a">NOT A WORD</strong> — as fast as possible!</div>
+      <br>
+      <div id="ld-prime-area" style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:0.15em;min-height:5rem;display:flex;align-items:center;justify-content:center;"></div>
+      <br>
+      <button class="btn-primary" onclick="startLDPrime()">Start →</button>
+    </div>`;
+}
+
+function startLDPrime() {
+  const { primed } = gs.data;
+  const area = document.getElementById('ld-prime-area');
+  let i=0;
+  function next() {
+    if(i>=primed.length){ setTimeout(ldTrial,500); return; }
+    if(area){ area.textContent=primed[i]; area.style.opacity='1'; }
+    setTimeout(()=>{ if(area)area.style.opacity='0'; setTimeout(()=>{i++;next();},200); },350);
+  }
+  next();
+}
+
+function ldTrial() {
+  if(gs.ldIdx>=gs.ldSeq.length){ finishLD(); return; }
+  const item=gs.ldSeq[gs.ldIdx];
+  gc().innerHTML = `
+    <div style="text-align:center;">
+      <div class="progress-text">${gs.ldIdx+1} / ${gs.ldSeq.length}</div>
+      <div class="timer-bar"><div class="timer-fill" id="ld-tf" style="width:100%"></div></div>
+      <div class="feedback-flash" id="ld-fb"></div>
+      <div class="lexical-word">${item.word}</div>
+      <div class="lexical-btns">
+        <button class="lex-btn lex-btn-word" onclick="submitLD(true)">WORD</button>
+        <button class="lex-btn lex-btn-nonword" onclick="submitLD(false)">NOT A WORD</button>
+      </div>
+      <div style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-dim);font-style:italic;">Respond as fast as you can</div>
+    </div>`;
+  gs.ldT[gs.ldIdx]=Date.now();
+  let pct=100;
+  gs.ldIv=setInterval(()=>{ pct-=2; const el=document.getElementById('ld-tf'); if(el)el.style.width=pct+'%'; if(pct<=0){clearInterval(gs.ldIv);submitLD(null);} },40);
+}
+
+function submitLD(isWord) {
+  clearInterval(gs.ldIv);
+  const item=gs.ldSeq[gs.ldIdx];
+  const rt=Date.now()-(gs.ldT[gs.ldIdx]||Date.now());
+  const correct=isWord===null?false:isWord===item.isWord;
+  gs.ldResults.push({...item,rt,correct});
+  const fb=document.getElementById('ld-fb');
+  if(fb){ fb.textContent=isWord===null?'⏱ Too slow!':correct?`✓ ${rt}ms`:'✗ Wrong'; fb.className='feedback-flash '+(correct&&isWord!==null?'correct-flash':'wrong-flash'); }
+  gs.ldIdx++;
+  setTimeout(ldTrial,400);
+}
+
+function finishLD() {
+  const results=gs.ldResults;
+  const pr=results.filter(r=>r.primed&&r.correct&&r.isWord);
+  const ur=results.filter(r=>!r.primed&&r.correct&&r.isWord);
+  const avgP=pr.length?Math.round(pr.reduce((s,r)=>s+r.rt,0)/pr.length):0;
+  const avgU=ur.length?Math.round(ur.reduce((s,r)=>s+r.rt,0)/ur.length):0;
+  endGame('lexical-decision',{avgPrimed:avgP,avgUnprimed:avgU});
+}
+
+// ════════════════════════════════════════════════════
+// GAME 6 — ILLUSION OF TRUTH
+// ════════════════════════════════════════════════════
+function renderIllusionTruth() {
+  gs.itRatings={}; gs.itRatingIdx=0;
+  const { statements } = gs.data;
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div></div>
+      <div class="game-title">🪄 Illusion of Truth</div>
+      <div class="game-subtitle">Read these statements. Rate how <strong>interesting</strong> each sounds (not whether it's true).</div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;margin:1.5rem 0;max-height:55vh;overflow-y:auto;padding-right:4px;">
+        ${statements.map((s,i)=>`
+          <div class="statement-card">
+            <div>${s.text}</div>
+            <div class="truth-slider">
+              <button class="truth-btn" onclick="rateIt(this)">Not interesting</button>
+              <button class="truth-btn" onclick="rateIt(this)">Somewhat</button>
+              <button class="truth-btn" onclick="rateIt(this)">Interesting</button>
+              <button class="truth-btn" onclick="rateIt(this)">Very interesting</button>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button class="btn-primary" onclick="proceedToTruth()">Continue →</button>
+    </div>`;
+}
+
+function rateIt(el) {
+  el.closest('.truth-slider').querySelectorAll('.truth-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function proceedToTruth() {
+  const { statements, repeatedIdx } = gs.data;
+  const set=[...statements.map((s,i)=>({...s,idx:i}))];
+  repeatedIdx.forEach(i=>set.push({...statements[i],idx:i,repeated:true}));
+  gs.itSet=set.sort(()=>Math.random()-0.5);
+  gs.itIdx=0;
+  itRating();
+}
+
+function itRating() {
+  if(gs.itIdx>=gs.itSet.length){ finishIT(); return; }
+  const stmt=gs.itSet[gs.itIdx];
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div></div>
+      <div class="game-title">Phase 2: Truth Rating</div>
+      <div class="game-subtitle">How <strong>true</strong> does this statement seem?</div>
+      <div class="statement-card" style="margin:2rem 0;">
+        <div style="font-size:1.05rem;line-height:1.7;">"${stmt.text}"</div>
+        <div class="truth-slider" style="margin-top:1.2rem;">
+          <button class="truth-btn" onclick="submitIT(1)">Definitely False</button>
+          <button class="truth-btn" onclick="submitIT(2)">Probably False</button>
+          <button class="truth-btn" onclick="submitIT(3)">Unsure</button>
+          <button class="truth-btn" onclick="submitIT(4)">Probably True</button>
+          <button class="truth-btn" onclick="submitIT(5)">Definitely True</button>
+        </div>
+      </div>
+      <div class="progress-text">${gs.itIdx+1} / ${gs.itSet.length}</div>
+    </div>`;
+}
+
+function submitIT(val) {
+  const stmt=gs.itSet[gs.itIdx];
+  if(!gs.itRatings[stmt.idx]) gs.itRatings[stmt.idx]={first:val};
+  else gs.itRatings[stmt.idx].second=val;
+  gs.itIdx++;
+  setTimeout(itRating,200);
+}
+
+function finishIT() {
+  const { repeatedIdx } = gs.data;
+  let shift=0, count=0;
+  repeatedIdx.forEach(i=>{ const r=gs.itRatings[i]; if(r&&r.second!==undefined){shift+=(r.second-r.first);count++;} });
+  endGame('illusion-truth',{ avgShift:count?(shift/count).toFixed(1):0 });
+}
+
+// ════════════════════════════════════════════════════
+// END GAME — RESULTS
+// ════════════════════════════════════════════════════
+function endGame(gameId, scores) {
+  const game=GAMES[gameId], concept=CONCEPTS[game.concept];
+  let scoreHTML='';
+
+  if(gameId==='word-web') {
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${scores.found}</div><div class="stat-label">Connected words found</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.total}</div><div class="stat-label">Total related words</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">Your brain was already pre-loading those connected concepts the moment you saw the centre word.</p>`;
+
+  } else if(gameId==='recall-recog') {
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${scores.recallScore}/8</div><div class="stat-label">Recall score</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.recogHits}/8</div><div class="stat-label">Recognition hits</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.falseAlarms}</div><div class="stat-label">False alarms</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.recogHits>scores.recallScore?'✓ Recognition beat recall — exactly as predicted!':'Your recall was impressively strong!'}</p>`;
+
+  } else if(gameId==='room-shift') {
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${scores.correct}/${scores.total}</div><div class="stat-label">Words recalled</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.sameRoom?'Same Room':'Different Room'}</div><div class="stat-label">Your condition</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.sameRoom?'You stayed in the same room — environmental cues were there to help your retrieval.':'You were moved to a new room — losing those cues typically makes retrieval harder.'}</p>`;
+
+  } else if(gameId==='encoding-cues') {
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${scores.withCue}/${scores.total}</div><div class="stat-label">With cue</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.noCue}/${scores.total}</div><div class="stat-label">Without cue</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.withCue>=scores.noCue?'✓ Cues helped — they matched what you encoded at study time!':'Even without cues your memory held up well — impressive!'}</p>`;
+
+  } else if(gameId==='lexical-decision') {
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${scores.avgPrimed}ms</div><div class="stat-label">Primed words RT</div></div>
+      <div class="stat-box"><div class="stat-value">${scores.avgUnprimed}ms</div><div class="stat-label">Unprimed words RT</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.avgPrimed<scores.avgUnprimed?`✓ You were ${scores.avgUnprimed-scores.avgPrimed}ms faster on primed words — implicit memory at work!`:'Priming effects can be subtle, but the activation was happening in your brain regardless!'}</p>`;
+
+  } else if(gameId==='illusion-truth') {
+    const sh=parseFloat(scores.avgShift);
+    scoreHTML=`<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${sh>0?'+':''}${scores.avgShift}</div><div class="stat-label">Avg truth rating shift</div></div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${sh>0?'✓ Repeated statements felt more true — you experienced the Illusion of Truth!':sh<0?'You rated repeated statements as less true — heightened scepticism!':'Ratings were consistent — but the effect was still operating beneath the surface.'}</p>`;
+  }
+
+  showScreen('result-screen');
+  document.getElementById('result-container').innerHTML = `
+    <div class="animate-in">
+      <div class="completion-emoji">🌿</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.5rem;">Experiment Complete!</h2>
+      <p style="color:var(--text-dim);margin-bottom:1.5rem;font-style:italic;">${game.title}</p>
+      ${scoreHTML}
+      <div class="concept-card">
+        <div class="concept-badge">${concept.badge}</div>
+        <div class="concept-title">${concept.title}</div>
+        <div class="concept-body">${concept.body}</div>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
+        <button class="btn-primary" onclick="startGame('${gameId}')">Play Again</button>
+        <button class="btn-secondary" onclick="showScreen('explorer')">Try Another →</button>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>
