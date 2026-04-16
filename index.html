@@ -155,6 +155,8 @@
     margin-bottom: 0.5rem;
   }
   .explorer-header p { color: var(--text-dim); font-style: italic; }
+  .tap-hint { display: none; font-size: 0.8rem; color: var(--text-dim); margin-top: 0.4rem; font-style: italic; }
+  @media (hover: none) { .tap-hint { display: block; } }
 
   .folders-container {
     display: flex;
@@ -180,7 +182,8 @@
     box-shadow: 0 2px 12px rgba(122,72,40,0.08);
     text-align: center;
   }
-  .folder-wrapper:hover .folder { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(122,72,40,0.14); }
+  .folder-wrapper:hover .folder,
+  .folder-wrapper.open .folder { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(122,72,40,0.14); }
   .folder-icon { font-size: 3.5rem; margin-bottom: 1rem; }
   .folder-title {
     font-family: 'Syne', sans-serif;
@@ -209,7 +212,8 @@
     box-shadow: 0 20px 60px rgba(122,72,40,0.18);
     z-index: 200;
   }
-  .folder-wrapper:hover .cards-popup {
+  .folder-wrapper:hover .cards-popup,
+  .folder-wrapper.open .cards-popup {
     opacity: 1;
     pointer-events: all;
     transform: translateX(-50%) translateY(0);
@@ -522,6 +526,7 @@
   <div class="explorer-header animate-in">
     <h1>🌿 Let's Explore Your Memory</h1>
     <p>Hover over a folder to see the experiments inside</p>
+    <p class="tap-hint">Tap a folder to see the experiments inside</p>
   </div>
 
   <div class="folders-container">
@@ -622,6 +627,33 @@
 // ════════════════════════════════════════════════════
 // SCREEN MANAGER
 // ════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// MOBILE FOLDER TAP
+// ════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+  document.querySelectorAll('.folder-wrapper').forEach(wrapper => {
+    wrapper.addEventListener('click', e => {
+      if (!isTouchDevice()) return;
+      // If clicking a game card, let it propagate to startGame
+      if (e.target.closest('.game-card')) return;
+      const isOpen = wrapper.classList.contains('open');
+      // Close all others
+      document.querySelectorAll('.folder-wrapper').forEach(w => w.classList.remove('open'));
+      if (!isOpen) wrapper.classList.add('open');
+    });
+  });
+
+  // Tap outside to close
+  document.addEventListener('click', e => {
+    if (!isTouchDevice()) return;
+    if (!e.target.closest('.folder-wrapper')) {
+      document.querySelectorAll('.folder-wrapper').forEach(w => w.classList.remove('open'));
+    }
+  });
+});
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
