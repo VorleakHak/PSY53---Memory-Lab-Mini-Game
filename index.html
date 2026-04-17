@@ -165,6 +165,7 @@
     flex-wrap: wrap;
     width: 100%;
     max-width: 1100px;
+    padding-top: 280px; /* room for cards popping above */
   }
   .folder-wrapper {
     position: relative;
@@ -198,19 +199,32 @@
 
   .cards-popup {
     position: absolute;
-    top: calc(100% + 10px);
+    bottom: calc(100% + 14px);
     left: 50%;
-    transform: translateX(-50%) translateY(-6px);
+    transform: translateX(-50%) translateY(10px);
     width: 310px;
     background: #f7f2e8;
     border-radius: 16px;
     padding: 1rem;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.22s ease, transform 0.22s ease;
+    transition: opacity 0.28s cubic-bezier(0.34,1.56,0.64,1), transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
     border: 1px solid rgba(122,72,40,0.18);
-    box-shadow: 0 20px 60px rgba(122,72,40,0.18);
+    box-shadow: 0 -8px 40px rgba(122,72,40,0.15), 0 4px 20px rgba(122,72,40,0.1);
     z-index: 200;
+  }
+  /* little arrow pointing down from popup to folder */
+  .cards-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    background: #f7f2e8;
+    border-right: 1px solid rgba(122,72,40,0.18);
+    border-bottom: 1px solid rgba(122,72,40,0.18);
+    rotate: 45deg;
   }
   .folder-wrapper:hover .cards-popup,
   .folder-wrapper.open .cards-popup {
@@ -316,46 +330,73 @@
   .concept-body strong { color: var(--text); font-style: normal; }
   .concept-body em { color: var(--accent2); font-style: italic; }
 
+  /* ── BUBBLY ANIMATIONS ── */
+  @keyframes bubblePop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(0.92); }
+    70%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  @keyframes floatBubble {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(0.4); }
+  }
+  @keyframes correctPop {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.12); }
+    60%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+  .bubble-dot {
+    position: fixed;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: floatBubble 0.7s ease-out forwards;
+  }
+  .btn-pop { animation: bubblePop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
   /* ── SHARED GAME ELEMENTS ── */
   .game-title {
     font-family: 'Syne', sans-serif;
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
-  .game-subtitle { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6; font-style: italic; }
+  .game-subtitle { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.65; font-style: italic; }
 
   .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
   .option-btn {
     background: var(--card-bg);
     border: 1px solid rgba(122,72,40,0.15);
     color: var(--text);
-    padding: 1rem;
-    border-radius: 12px;
+    padding: 1.1rem;
+    border-radius: 14px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
     letter-spacing: 0.04em;
   }
-  .option-btn:hover { background: rgba(122,72,40,0.1); border-color: var(--accent); transform: translateY(-2px); }
-  .option-btn.correct { background: rgba(90,120,64,0.2); border-color: #5a7840; }
-  .option-btn.wrong   { background: rgba(200,80,60,0.15); border-color: #c8503c; }
+  .option-btn:hover { background: rgba(122,72,40,0.1); border-color: var(--accent); box-shadow: 0 4px 16px rgba(122,72,40,0.12); }
+  .option-btn.correct { background: rgba(90,120,64,0.2); border-color: #5a7840; animation: correctPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  .option-btn.wrong   { background: rgba(200,80,60,0.15); border-color: #c8503c; animation: bubblePop 0.35s ease; }
 
   .timer-bar { width: 100%; height: 6px; background: rgba(122,72,40,0.1); border-radius: 3px; margin-bottom: 1.5rem; overflow: hidden; }
   .timer-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width 0.1s linear; }
 
-  .progress-text { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-dim); margin-bottom: 0.5rem; }
+  .progress-text { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text-dim); margin-bottom: 0.5rem; }
 
   .study-list { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin: 1.5rem 0; }
   .study-word {
     background: #f7f2e8;
-    padding: 0.5rem 1.2rem;
+    padding: 0.6rem 1.4rem;
     border-radius: 50px;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     border: 1px solid rgba(122,72,40,0.15);
     letter-spacing: 0.04em;
   }
@@ -414,28 +455,28 @@
     background: #f7f2e8;
     border: 2px solid rgba(122,72,40,0.15);
     color: var(--text);
-    padding: 0.7rem 0.5rem;
-    border-radius: 10px;
+    padding: 0.8rem 0.5rem;
+    border-radius: 12px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s, border-color 0.2s;
     letter-spacing: 0.03em;
   }
   .recog-btn:hover { background: rgba(122,72,40,0.08); border-color: var(--accent); }
-  .recog-btn.selected { background: rgba(196,120,58,0.2); border-color: var(--accent2); }
-  .recog-btn.hit  { background: rgba(90,120,64,0.2); border-color: #5a7840; }
+  .recog-btn.selected { background: rgba(196,120,58,0.2); border-color: var(--accent2); animation: bubblePop 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+  .recog-btn.hit  { background: rgba(90,120,64,0.2); border-color: #5a7840; animation: correctPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
   .recog-btn.fa   { background: rgba(200,80,60,0.15); border-color: #c8503c; }
   .recog-btn.miss { background: rgba(196,120,58,0.12); border-color: var(--gold); }
 
   .lexical-word {
     font-family: 'Syne', sans-serif;
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     margin: 1rem 0 2rem;
-    min-height: 4.5rem;
+    min-height: 5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -443,14 +484,14 @@
   }
   .lexical-btns { display: flex; gap: 1rem; justify-content: center; }
   .lex-btn {
-    padding: 1rem 2.5rem;
-    border-radius: 12px;
+    padding: 1.1rem 2.8rem;
+    border-radius: 14px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
     border: 2px solid;
-    transition: all 0.15s;
+    transition: background 0.15s, box-shadow 0.15s;
     letter-spacing: 0.04em;
   }
   .lex-btn-word    { background: rgba(90,120,64,0.15); border-color: #5a7840; color: #3d5a28; }
@@ -458,7 +499,7 @@
   .lex-btn-nonword { background: rgba(200,80,60,0.12); border-color: #c8503c; color: #8a3020; }
   .lex-btn-nonword:hover { background: rgba(200,80,60,0.25); }
 
-  .feedback-flash { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; min-height: 2rem; margin-bottom: 0.5rem; }
+  .feedback-flash { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; min-height: 2.2rem; margin-bottom: 0.5rem; }
   .correct-flash { color: #5a7840; }
   .wrong-flash   { color: #c8503c; }
 
@@ -477,19 +518,20 @@
   .truth-btn {
     flex: 1;
     min-width: 80px;
-    padding: 0.5rem;
-    border-radius: 8px;
+    padding: 0.6rem 0.4rem;
+    border-radius: 10px;
     border: 1px solid rgba(122,72,40,0.2);
     background: transparent;
     color: var(--text);
     cursor: pointer;
     font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    transition: all 0.2s;
+    transition: background 0.2s, border-color 0.2s;
     font-style: normal;
   }
-  .truth-btn:hover, .truth-btn.selected { background: rgba(196,120,58,0.18); border-color: var(--accent2); }
+  .truth-btn:hover { background: rgba(196,120,58,0.12); border-color: var(--accent2); }
+  .truth-btn.selected { background: rgba(196,120,58,0.22); border-color: var(--accent2); animation: bubblePop 0.35s cubic-bezier(0.34,1.56,0.64,1); }
 
   .results-breakdown { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; justify-content: center; }
   .stat-box { background: var(--card-bg); border-radius: 12px; padding: 1rem 1.5rem; min-width: 120px; text-align: center; border: 1px solid rgba(122,72,40,0.12); }
@@ -627,6 +669,47 @@
 // ════════════════════════════════════════════════════
 // SCREEN MANAGER
 // ════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// BUBBLY CLICK EFFECTS
+// ════════════════════════════════════════════════════
+const BUBBLE_COLORS = ['#c4783a','#7a4828','#5a7840','#d4603a','#e8c8a0'];
+
+function spawnBubbles(e) {
+  const count = 6 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble-dot';
+    const size = 6 + Math.random() * 10;
+    b.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${e.clientX + (Math.random()-0.5)*30}px;
+      top:${e.clientY + (Math.random()-0.5)*30}px;
+      background:${BUBBLE_COLORS[Math.floor(Math.random()*BUBBLE_COLORS.length)]};
+      animation-duration:${0.5+Math.random()*0.4}s;
+      animation-delay:${Math.random()*0.08}s;
+      transform-origin:center;
+    `;
+    document.body.appendChild(b);
+    b.addEventListener('animationend', () => b.remove());
+  }
+}
+
+// Add pop animation to a button
+function popBtn(el) {
+  el.classList.remove('btn-pop');
+  void el.offsetWidth; // reflow
+  el.classList.add('btn-pop');
+  el.addEventListener('animationend', () => el.classList.remove('btn-pop'), { once: true });
+}
+
+// Delegate bubble + pop to all game interaction elements
+document.addEventListener('click', e => {
+  const target = e.target.closest('.option-btn, .recog-btn, .truth-btn, .lex-btn, .btn-primary, .btn-secondary, .game-back');
+  if (!target) return;
+  spawnBubbles(e);
+  popBtn(target);
+});
+
 // ════════════════════════════════════════════════════
 // MOBILE FOLDER TAP
 // ════════════════════════════════════════════════════
