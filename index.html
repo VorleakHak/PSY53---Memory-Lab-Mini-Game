@@ -170,24 +170,116 @@
   .folder-wrapper {
     position: relative;
     flex: 1;
-    min-width: 280px;
-    max-width: 340px;
+    min-width: 200px;
+    max-width: 260px;
   }
+
+  /* ── CARD BOX SHAPE ── */
   .folder {
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 2rem;
+    position: relative;
+    border-radius: 14px 14px 10px 10px;
+    padding: 0;
     cursor: default;
     transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, opacity 0.3s ease;
-    border: 1px solid rgba(122,72,40,0.12);
-    box-shadow: 0 2px 12px rgba(122,72,40,0.08);
     text-align: center;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
+
+  /* LID — top flap of the card box */
+  .folder-lid {
+    border-radius: 14px 14px 0 0;
+    padding: 1.1rem 1.2rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    position: relative;
+    border: 2px solid var(--box-color, #7a4828);
+    border-bottom: none;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.06);
+  }
+  /* dashed cut-line between lid and body */
+  .folder-lid::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -2px; right: -2px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--box-color, #7a4828) 0 6px, transparent 6px 12px);
+    opacity: 0.5;
+  }
+
+  /* BODY — main box body */
+  .folder-body {
+    border-radius: 0 0 10px 10px;
+    padding: 1.1rem 1.2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid var(--box-color, #7a4828);
+    border-top: none;
+    /* inner decorative inset */
+    box-shadow: inset 0 0 0 5px rgba(255,255,255,0.55),
+                0 6px 20px rgba(122,72,40,0.13);
+  }
+
+  /* inner decorative border frame on body */
+  .folder-body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0 0 8px 8px;
+    border: 1.5px solid rgba(122,72,40,0.18);
+    pointer-events: none;
+  }
+
+  /* per-folder colour themes */
+  .folder-1 { --box-color: #7a4828; --box-bg-lid: #e8dac8; --box-bg-body: #ede5d5; }
+  .folder-2 { --box-color: #c4783a; --box-bg-lid: #f0dcc0; --box-bg-body: #f5e8d0; }
+  .folder-3 { --box-color: #5a7840; --box-bg-lid: #d8e4c8; --box-bg-body: #e4eed8; }
+
+  .folder-1 .folder-lid  { background: var(--box-bg-lid); }
+  .folder-1 .folder-body { background: var(--box-bg-body); }
+  .folder-2 .folder-lid  { background: var(--box-bg-lid); }
+  .folder-2 .folder-body { background: var(--box-bg-body); }
+  .folder-3 .folder-lid  { background: var(--box-bg-lid); }
+  .folder-3 .folder-body { background: var(--box-bg-body); }
+
+  .folder-icon { font-size: 2.8rem; line-height: 1; }
+  .folder-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--box-color, #7a4828);
+    letter-spacing: 0.02em;
+  }
+  .folder-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+    font-style: italic;
+  }
+  /* small "OPEN" hint label on lid */
+  .folder-lid-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--box-color, #7a4828);
+    opacity: 0.55;
+  }
+
   /* hovered folder: spring-scale up */
   .folder-wrapper:hover .folder,
   .folder-wrapper.open .folder {
     transform: scale(1.09) translateY(-6px);
-    box-shadow: 0 16px 40px rgba(122,72,40,0.2);
     transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
   }
   /* sibling folders: shrink + dim */
@@ -195,19 +287,8 @@
   .folders-container:has(.folder-wrapper.open)  .folder-wrapper:not(.open)  .folder {
     transform: scale(0.93) translateY(4px);
     opacity: 0.7;
-    transition: transform 0.35s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.35s ease, opacity 0.3s ease;
   }
-  .folder-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-  .folder-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .folder-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; font-style: italic; }
-  .folder-1 { border-top: 3px solid var(--folder1); }
-  .folder-2 { border-top: 3px solid var(--folder2); }
-  .folder-3 { border-top: 3px solid var(--folder3); }
 
   .cards-popup {
     position: absolute;
@@ -653,9 +734,14 @@
     <!-- Folder 1 -->
     <div class="folder-wrapper">
       <div class="folder folder-1">
-        <div class="folder-icon">🔗</div>
-        <div class="folder-title">Recall &amp; Recognition</div>
-        <div class="folder-desc">How your brain stores and retrieves information — and why some paths are easier than others.</div>
+        <div class="folder-lid">
+          <div class="folder-lid-label">Hover to explore</div>
+          <div class="folder-icon">🔗</div>
+        </div>
+        <div class="folder-body">
+          <div class="folder-title">Recall &amp; Recognition</div>
+          <div class="folder-desc">How your brain stores and retrieves information — and why some paths are easier than others.</div>
+        </div>
       </div>
       <div class="cards-popup">
         <div class="play-card card-brown" onclick="startGame('word-web')">
@@ -682,9 +768,14 @@
     <!-- Folder 2 -->
     <div class="folder-wrapper">
       <div class="folder folder-2">
-        <div class="folder-icon">🏛️</div>
-        <div class="folder-title">Context &amp; Encoding</div>
-        <div class="folder-desc">How your environment and learning conditions shape what you can remember later.</div>
+        <div class="folder-lid">
+          <div class="folder-lid-label">Hover to explore</div>
+          <div class="folder-icon">🏛️</div>
+        </div>
+        <div class="folder-body">
+          <div class="folder-title">Context &amp; Encoding</div>
+          <div class="folder-desc">How your environment and learning conditions shape what you can remember later.</div>
+        </div>
       </div>
       <div class="cards-popup">
         <div class="play-card card-green" onclick="startGame('room-shift')">
@@ -711,9 +802,14 @@
     <!-- Folder 3 -->
     <div class="folder-wrapper">
       <div class="folder folder-3">
-        <div class="folder-icon">👁️</div>
-        <div class="folder-title">Implicit Memory</div>
-        <div class="folder-desc">Memory that operates beneath conscious awareness — shaping your choices without you knowing.</div>
+        <div class="folder-lid">
+          <div class="folder-lid-label">Hover to explore</div>
+          <div class="folder-icon">👁️</div>
+        </div>
+        <div class="folder-body">
+          <div class="folder-title">Implicit Memory</div>
+          <div class="folder-desc">Memory that operates beneath conscious awareness — shaping your choices without you knowing.</div>
+        </div>
       </div>
       <div class="cards-popup">
         <div class="play-card card-blue" onclick="startGame('lexical-decision')">
