@@ -199,32 +199,20 @@
 
   .cards-popup {
     position: absolute;
-    bottom: calc(100% + 14px);
+    bottom: calc(100% + 18px);
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    width: 310px;
-    background: #f7f2e8;
-    border-radius: 16px;
-    padding: 1rem;
+    width: 300px;
+    background: transparent;
+    padding: 0.5rem 0.25rem 0.75rem;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.28s cubic-bezier(0.34,1.56,0.64,1), transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
-    border: 1px solid rgba(122,72,40,0.18);
-    box-shadow: 0 -8px 40px rgba(122,72,40,0.15), 0 4px 20px rgba(122,72,40,0.1);
+    transition: opacity 0.3s cubic-bezier(0.34,1.56,0.64,1), transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
     z-index: 200;
-  }
-  /* little arrow pointing down from popup to folder */
-  .cards-popup::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px; height: 16px;
-    background: #f7f2e8;
-    border-right: 1px solid rgba(122,72,40,0.18);
-    border-bottom: 1px solid rgba(122,72,40,0.18);
-    rotate: 45deg;
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    align-items: flex-end;
   }
   .folder-wrapper:hover .cards-popup,
   .folder-wrapper.open .cards-popup {
@@ -232,36 +220,92 @@
     pointer-events: all;
     transform: translateX(-50%) translateY(0);
   }
-  .cards-popup-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--text-dim);
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(122,72,40,0.12);
-  }
-  .game-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem;
-    border-radius: 10px;
+
+  /* ── PLAYING CARDS ── */
+  .play-card {
+    width: 128px;
+    height: 180px;
+    background: #fff8f2;
+    border-radius: 12px;
+    border: 1.5px solid rgba(122,72,40,0.18);
+    box-shadow: 0 6px 20px rgba(122,72,40,0.2), 0 2px 6px rgba(122,72,40,0.1);
+    padding: 0.5rem 0.4rem;
+    position: relative;
     cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+    flex-shrink: 0;
+    overflow: hidden;
   }
-  .game-card:last-child { margin-bottom: 0; }
-  .game-card:hover { background: rgba(122,72,40,0.07); }
-  .game-card-icon { font-size: 1.8rem; min-width: 2.5rem; text-align: center; }
-  .game-card-info h4 {
+  .play-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    border-radius: 12px 12px 0 0;
+    background: var(--card-accent, #7a4828);
+  }
+  .play-card:nth-child(1) { transform-origin: bottom right; }
+  .play-card:nth-child(2) { transform-origin: bottom left; }
+  .play-card:nth-child(1):hover { transform: translateY(-16px) rotate(-5deg); box-shadow: 0 20px 48px rgba(122,72,40,0.28); }
+  .play-card:nth-child(2):hover { transform: translateY(-16px) rotate(5deg);  box-shadow: 0 20px 48px rgba(122,72,40,0.28); }
+
+  .card-corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    line-height: 1;
+  }
+  .card-corner-tl { top: 0.55rem; left: 0.45rem; }
+  .card-corner-br { bottom: 0.55rem; right: 0.45rem; transform: rotate(180deg); }
+  .card-idx {
     font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--card-accent, #7a4828);
   }
-  .game-card-info p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; font-style: italic; }
+  .card-suit { font-size: 0.62rem; line-height: 1.2; }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    padding: 0 0.25rem;
+    margin-top: 0.4rem;
+  }
+  .card-emoji { font-size: 2.2rem; line-height: 1; }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #2c1a0a;
+    text-align: center;
+  }
+  .card-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.56rem;
+    color: #7a5c3a;
+    text-align: center;
+    line-height: 1.35;
+    font-style: italic;
+  }
+
+  /* per-card accent colours */
+  .card-brown { --card-accent: #7a4828; }
+  .card-terra { --card-accent: #c8503c; }
+  .card-green { --card-accent: #5a7840; }
+  .card-amber { --card-accent: #c4783a; }
+  .card-blue  { --card-accent: #6878a4; }
+  .card-plum  { --card-accent: #8b5fa0; }
 
   /* ── GAME SCREEN ── */
   #game-screen {
@@ -581,20 +625,23 @@
         <div class="folder-desc">How your brain stores and retrieves information — and why some paths are easier than others.</div>
       </div>
       <div class="cards-popup">
-        <div class="cards-popup-title">2 experiments inside</div>
-        <div class="game-card" onclick="startGame('word-web')">
-          <div class="game-card-icon">🕸️</div>
-          <div class="game-card-info">
-            <h4>Word Web</h4>
-            <p>Activate a network of connected concepts and discover spreading activation</p>
+        <div class="play-card card-brown" onclick="startGame('word-web')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">W</span><span class="card-suit">♠</span></div>
+          <div class="card-body">
+            <div class="card-emoji">🕸️</div>
+            <div class="card-title">Word Web</div>
+            <div class="card-desc">Spreading activation in your memory network</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">W</span><span class="card-suit">♠</span></div>
         </div>
-        <div class="game-card" onclick="startGame('recall-recog')">
-          <div class="game-card-icon">🃏</div>
-          <div class="game-card-info">
-            <h4>Recall vs. Recognition</h4>
-            <p>Experience why one type of memory test is dramatically harder than the other</p>
+        <div class="play-card card-terra" onclick="startGame('recall-recog')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">R</span><span class="card-suit">♥</span></div>
+          <div class="card-body">
+            <div class="card-emoji">🃏</div>
+            <div class="card-title">Recall vs. Recognition</div>
+            <div class="card-desc">Which retrieval path is harder?</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">R</span><span class="card-suit">♥</span></div>
         </div>
       </div>
     </div>
@@ -607,20 +654,23 @@
         <div class="folder-desc">How your environment and learning conditions shape what you can remember later.</div>
       </div>
       <div class="cards-popup">
-        <div class="cards-popup-title">2 experiments inside</div>
-        <div class="game-card" onclick="startGame('room-shift')">
-          <div class="game-card-icon">🚪</div>
-          <div class="game-card-info">
-            <h4>The Room Shift</h4>
-            <p>Learn in one environment, test in another — see if context really matters</p>
+        <div class="play-card card-green" onclick="startGame('room-shift')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">RS</span><span class="card-suit">♣</span></div>
+          <div class="card-body">
+            <div class="card-emoji">🚪</div>
+            <div class="card-title">The Room Shift</div>
+            <div class="card-desc">Does your environment shape what you remember?</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">RS</span><span class="card-suit">♣</span></div>
         </div>
-        <div class="game-card" onclick="startGame('encoding-cues')">
-          <div class="game-card-icon">🔑</div>
-          <div class="game-card-info">
-            <h4>Cue &amp; Retrieve</h4>
-            <p>Discover how cues learned alongside information unlock your memories</p>
+        <div class="play-card card-amber" onclick="startGame('encoding-cues')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">C</span><span class="card-suit">♦</span></div>
+          <div class="card-body">
+            <div class="card-emoji">🔑</div>
+            <div class="card-title">Cue &amp; Retrieve</div>
+            <div class="card-desc">The right cue unlocks the right memory</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">C</span><span class="card-suit">♦</span></div>
         </div>
       </div>
     </div>
@@ -633,20 +683,23 @@
         <div class="folder-desc">Memory that operates beneath conscious awareness — shaping your choices without you knowing.</div>
       </div>
       <div class="cards-popup">
-        <div class="cards-popup-title">2 experiments inside</div>
-        <div class="game-card" onclick="startGame('lexical-decision')">
-          <div class="game-card-icon">⚡</div>
-          <div class="game-card-info">
-            <h4>Lexical Decision</h4>
-            <p>React to words as fast as you can — and discover how priming speeds you up</p>
+        <div class="play-card card-blue" onclick="startGame('lexical-decision')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">L</span><span class="card-suit">⚡</span></div>
+          <div class="card-body">
+            <div class="card-emoji">⚡</div>
+            <div class="card-title">Lexical Decision</div>
+            <div class="card-desc">How priming secretly speeds up your brain</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">L</span><span class="card-suit">⚡</span></div>
         </div>
-        <div class="game-card" onclick="startGame('illusion-truth')">
-          <div class="game-card-icon">🪄</div>
-          <div class="game-card-info">
-            <h4>Illusion of Truth</h4>
-            <p>Rate statements for truth — and reveal how familiarity makes false claims feel true</p>
+        <div class="play-card card-plum" onclick="startGame('illusion-truth')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">IT</span><span class="card-suit">✦</span></div>
+          <div class="card-body">
+            <div class="card-emoji">🪄</div>
+            <div class="card-title">Illusion of Truth</div>
+            <div class="card-desc">Familiarity makes false things feel true</div>
           </div>
+          <div class="card-corner card-corner-br"><span class="card-idx">IT</span><span class="card-suit">✦</span></div>
         </div>
       </div>
     </div>
