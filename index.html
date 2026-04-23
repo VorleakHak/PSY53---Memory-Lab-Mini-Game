@@ -744,14 +744,14 @@
         </div>
       </div>
       <div class="cards-popup">
-        <div class="play-card card-brown" onclick="startGame('word-web')">
-          <div class="card-corner card-corner-tl"><span class="card-idx">W</span><span class="card-suit">♠</span></div>
+        <div class="play-card card-brown" onclick="startGame('memory-curve')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">MC</span><span class="card-suit">♠</span></div>
           <div class="card-body">
-            <div class="card-emoji">🕸️</div>
-            <div class="card-title">Word Web</div>
-            <div class="card-desc">Spreading activation in your memory network</div>
+            <div class="card-emoji">🎯</div>
+            <div class="card-title">Memory Curve</div>
+            <div class="card-desc">Why you remember the first & last words best</div>
           </div>
-          <div class="card-corner card-corner-br"><span class="card-idx">W</span><span class="card-suit">♠</span></div>
+          <div class="card-corner card-corner-br"><span class="card-idx">MC</span><span class="card-suit">♠</span></div>
         </div>
         <div class="play-card card-terra" onclick="startGame('recall-recog')">
           <div class="card-corner card-corner-tl"><span class="card-idx">R</span><span class="card-suit">♥</span></div>
@@ -778,23 +778,23 @@
         </div>
       </div>
       <div class="cards-popup">
-        <div class="play-card card-green" onclick="startGame('room-shift')">
-          <div class="card-corner card-corner-tl"><span class="card-idx">RS</span><span class="card-suit">♣</span></div>
+        <div class="play-card card-green" onclick="startGame('depth-dive')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">DD</span><span class="card-suit">♣</span></div>
           <div class="card-body">
-            <div class="card-emoji">🚪</div>
-            <div class="card-title">The Room Shift</div>
-            <div class="card-desc">Does your environment shape what you remember?</div>
+            <div class="card-emoji">🔬</div>
+            <div class="card-title">Depth Dive</div>
+            <div class="card-desc">Does thinking deeply about a word help you remember it?</div>
           </div>
-          <div class="card-corner card-corner-br"><span class="card-idx">RS</span><span class="card-suit">♣</span></div>
+          <div class="card-corner card-corner-br"><span class="card-idx">DD</span><span class="card-suit">♣</span></div>
         </div>
-        <div class="play-card card-amber" onclick="startGame('encoding-cues')">
-          <div class="card-corner card-corner-tl"><span class="card-idx">C</span><span class="card-suit">♦</span></div>
+        <div class="play-card card-amber" onclick="startGame('cue-match')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">CM</span><span class="card-suit">♦</span></div>
           <div class="card-body">
             <div class="card-emoji">🔑</div>
-            <div class="card-title">Cue &amp; Retrieve</div>
-            <div class="card-desc">The right cue unlocks the right memory</div>
+            <div class="card-title">Cue Match</div>
+            <div class="card-desc">Does it matter which cue you use to unlock a memory?</div>
           </div>
-          <div class="card-corner card-corner-br"><span class="card-idx">C</span><span class="card-suit">♦</span></div>
+          <div class="card-corner card-corner-br"><span class="card-idx">CM</span><span class="card-suit">♦</span></div>
         </div>
       </div>
     </div>
@@ -812,14 +812,14 @@
         </div>
       </div>
       <div class="cards-popup">
-        <div class="play-card card-blue" onclick="startGame('lexical-decision')">
-          <div class="card-corner card-corner-tl"><span class="card-idx">L</span><span class="card-suit">⚡</span></div>
+        <div class="play-card card-blue" onclick="startGame('priming-lab')">
+          <div class="card-corner card-corner-tl"><span class="card-idx">PL</span><span class="card-suit">⚡</span></div>
           <div class="card-body">
             <div class="card-emoji">⚡</div>
-            <div class="card-title">Lexical Decision</div>
-            <div class="card-desc">How priming secretly speeds up your brain</div>
+            <div class="card-title">Priming Lab</div>
+            <div class="card-desc">Watch hidden words speed up your brain — then see the proof</div>
           </div>
-          <div class="card-corner card-corner-br"><span class="card-idx">L</span><span class="card-suit">⚡</span></div>
+          <div class="card-corner card-corner-br"><span class="card-idx">PL</span><span class="card-suit">⚡</span></div>
         </div>
         <div class="play-card card-plum" onclick="startGame('illusion-truth')">
           <div class="card-corner card-corner-tl"><span class="card-idx">IT</span><span class="card-suit">✦</span></div>
@@ -936,13 +936,11 @@ function goHome() {
 // GAME DATA
 // ════════════════════════════════════════════════════
 const GAMES = {
-  'word-web': {
-    title: 'Word Web',
-    concept: 'spreading-activation',
+  'memory-curve': {
+    title: 'Memory Curve',
+    concept: 'serial-position',
     data: {
-      center: 'BREAD',
-      related: ['TOAST','BUTTER','WHEAT','OVEN','FLOUR','SANDWICH'],
-      unrelated: ['ROCKET','ALGEBRA','GLACIER','TRUMPET']
+      words: ['ANCHOR','MELON','TROPHY','SIGNAL','BARREL','CASTLE','FEATHER','COMPASS','VELVET','LANTERN','HONEY','BRIDGE']
     }
   },
   'recall-recog': {
@@ -953,94 +951,115 @@ const GAMES = {
       distractors: ['PALACE','WINDOW','SUGAR','TORCH','TUNNEL','SILK','LAMP','JUNGLE']
     }
   },
-  'room-shift': {
-    title: 'The Room Shift',
-    concept: 'context-dependent',
-    data: { studyWords: ['ANCHOR','LEMON','TROPHY','COMPASS','BARREL','RIBBON','SKETCH','GOBLET'] }
-  },
-  'encoding-cues': {
-    title: 'Cue & Retrieve',
-    concept: 'encoding-specificity',
+  'depth-dive': {
+    title: 'Depth Dive',
+    concept: 'levels-of-processing',
     data: {
-      pairs: [
-        { cue:'OCEAN',  target:'WAVE'  },
-        { cue:'DARK',   target:'MOON'  },
-        { cue:'COLD',   target:'SNOW'  },
-        { cue:'LOUD',   target:'DRUM'  },
-        { cue:'SWEET',  target:'CAKE'  },
-        { cue:'SHARP',  target:'BLADE' }
+      items: [
+        { word:'LAMP',      type:'structural',   q:'Does this word have more than 4 letters?',    ans:false },
+        { word:'UMBRELLA',  type:'structural',   q:'Does this word have more than 4 letters?',    ans:true  },
+        { word:'MUG',       type:'structural',   q:'Does this word have more than 4 letters?',    ans:false },
+        { word:'TELESCOPE', type:'structural',   q:'Does this word have more than 4 letters?',    ans:true  },
+        { word:'BEE',       type:'phonological', q:'Does this word rhyme with "SEA"?',            ans:true  },
+        { word:'CLOCK',     type:'phonological', q:'Does this word rhyme with "SEA"?',            ans:false },
+        { word:'KNEE',      type:'phonological', q:'Does this word rhyme with "SEA"?',            ans:true  },
+        { word:'STONE',     type:'phonological', q:'Does this word rhyme with "SEA"?',            ans:false },
+        { word:'TIGER',     type:'semantic',     q:'Is this a living creature?',                  ans:true  },
+        { word:'HAMMER',    type:'semantic',     q:'Is this a living creature?',                  ans:false },
+        { word:'EAGLE',     type:'semantic',     q:'Is this a living creature?',                  ans:true  },
+        { word:'SUITCASE',  type:'semantic',     q:'Is this a living creature?',                  ans:false }
       ]
     }
   },
-  'lexical-decision': {
-    title: 'Lexical Decision',
+  'cue-match': {
+    title: 'Cue Match',
+    concept: 'encoding-specificity',
+    data: {
+      pairs: [
+        { cue:'OCEAN',  mismatch:'RIVER',  target:'WAVE'  },
+        { cue:'DARK',   mismatch:'NIGHT',  target:'MOON'  },
+        { cue:'COLD',   mismatch:'WINTER', target:'SNOW'  },
+        { cue:'LOUD',   mismatch:'NOISE',  target:'DRUM'  },
+        { cue:'SWEET',  mismatch:'SUGAR',  target:'CAKE'  },
+        { cue:'SHARP',  mismatch:'KNIFE',  target:'BLADE' }
+      ]
+    }
+  },
+  'priming-lab': {
+    title: 'Priming Lab',
     concept: 'priming-implicit',
     data: {
-      primed:           ['DOCTOR','NURSE','HOSPITAL'],
-      relatedTargets:   ['MEDICINE','PATIENT','HEALTH'],
-      unrelatedTargets: ['GUITAR','PLANET','BUCKET'],
-      nonwords:         ['FRUMBLE','SNORTLE','VEXION','BLARDGE','FLUNKET','ZORBISH']
+      primeWords:   ['DOCTOR','NURSE','HOSPITAL','MEDICINE','PATIENT'],
+      primed:       ['HEALTH','CLINIC','SURGEON','REMEDY'],
+      unprimed:     ['GUITAR','FOREST','ROCKET','MARBLE'],
+      nonwords:     ['FRUMBLE','SNORTLE','VEXION','BLARDGE']
     }
   },
   'illusion-truth': {
     title: 'Illusion of Truth',
     concept: 'illusion-truth',
     data: {
-      statements: [
-        { text:"The Great Wall of China is visible from space with the naked eye.", truth:false },
-        { text:"Humans use only 10% of their brain.", truth:false },
-        { text:"Goldfish have a memory span of three seconds.", truth:false },
-        { text:"Napoleon Bonaparte was unusually short for his time.", truth:false },
-        { text:"Lightning never strikes the same place twice.", truth:false },
-        { text:"Your heart stops beating when you sneeze.", truth:false }
+      phase1: [
+        "The Great Wall of China is visible from space with the naked eye.",
+        "Humans use only 10% of their brain at any one time.",
+        "Goldfish have a memory span of just three seconds.",
+        "Napoleon Bonaparte was unusually short for his era."
       ],
-      repeatedIdx: [1,3]
+      phase2new: [
+        "Chameleons change colour to blend in with their surroundings.",
+        "We only use about 10% of our DNA.",
+        "Hair and fingernails continue to grow after death.",
+        "A dog's mouth is cleaner than a human's."
+      ]
     }
   }
 };
 
 const CONCEPTS = {
-  'spreading-activation': {
-    badge: 'Spreading Activation',
-    title: 'Your Brain Pre-Activated Related Concepts',
-    body: `When you saw <strong>BREAD</strong>, your brain didn't just recognise it in isolation. It sent activation rippling through your entire mental network — automatically "pre-loading" related concepts like TOAST, BUTTER, and FLOUR.<br><br>
-    This is <strong>Spreading Activation</strong>. Memory is organised as a vast network of nodes (ideas) connected by associative links. When one node fires, activation spreads to neighbouring nodes — just like neurons triggering action potentials.<br><br>
-    This is exactly why <em>hints</em> help you remember: they activate a nearby node, which spreads activation toward the target memory you're trying to reach.`
+  'serial-position': {
+    badge: 'Serial Position Effect',
+    title: 'You Remember the Edges, Not the Middle',
+    body: `Look at the grid — you probably remembered more words from the <strong>beginning</strong> and <strong>end</strong> of the list, and forgot more from the middle.<br><br>
+    The <strong>Primacy Effect</strong>: early words had more time to be rehearsed and transferred into long-term memory before new words pushed them out.<br><br>
+    The <strong>Recency Effect</strong>: the last few words were still held in short-term working memory when you started recalling — so they came out first and clearly.<br><br>
+    The middle is the graveyard of attention. Every word after the first competes for rehearsal time, and every word before the last gets pushed out of working memory. This U-shaped curve is one of the most replicated findings in all of psychology — it shows up in eyewitness testimony, exam studying, and even how people remember lists of arguments.`
   },
   'recall-vs-recognition': {
     badge: 'Recall vs. Recognition',
     title: "Recognition Is Easier — Here's Why",
     body: `You probably found the <strong>recall phase harder</strong>. This is one of the most reliable findings in memory research.<br><br>
     <strong>Recall</strong> requires you to generate the memory from scratch — like searching a library with no catalogue. <strong>Recognition</strong> just needs a familiarity judgement — the answer is right there and your brain only needs to say "yes, I've seen this."<br><br>
-    Both involve the same stored memories, but use different <em>retrieval paths</em>. Recognition provides a direct, strong cue pointing straight to the memory node. Recall forces you to navigate the network from a much more distant starting point.`
+    Both involve the same stored memories, but use different <em>retrieval paths</em>. Recognition provides a direct, strong cue pointing straight to the memory node. Recall forces you to navigate the network from a much more distant starting point. This gap explains why multiple-choice exams feel easier than fill-in-the-blank — even when you know exactly the same material.`
   },
-  'context-dependent': {
-    badge: 'Context-Dependent Learning',
-    title: 'Your Environment Is Part of Your Memory',
-    body: `Memory isn't stored in isolation — it's encoded <em>together with its context</em>. The sights, sounds, and even smells of where you studied become tangled up with the material itself.<br><br>
-    This is <strong>Context-Dependent Learning</strong>. When you return to the same context during testing, those environmental cues act as retrieval prompts — activating the memory network more efficiently. A different room removes those cues.<br><br>
-    Practical implication: <em>studying and testing in the same room</em> gives you a memory advantage. It's also why "state-dependent memory" exists — your internal state (tired, caffeinated, anxious) is encoded as part of the memory trace too.`
+  'levels-of-processing': {
+    badge: 'Levels of Processing',
+    title: 'Thinking Deeper Burns Words Into Memory',
+    body: `Here's what was really happening: each question forced you to process words at a different depth.<br><br>
+    <strong>Structural</strong> (letter count): you only noticed the word's surface appearance — the shallowest level. <strong>Phonological</strong> (rhyming): you processed how it sounds — a step deeper. <strong>Semantic</strong> (living creature): you activated the word's <em>meaning</em> — the deepest level.<br><br>
+    This is <strong>Craik & Lockhart's Levels of Processing theory</strong> (1972). Deeper encoding creates a richer, more interconnected memory trace with more retrieval pathways. Shallow encoding leaves only a thin surface trace that fades quickly.<br><br>
+    Practical implication: <em>reading a word doesn't make you remember it. Thinking about what it means does.</em> This is why elaborative study techniques (making connections, asking "why?", generating examples) outperform passive re-reading every time.`
   },
   'encoding-specificity': {
     badge: 'Encoding Specificity',
-    title: 'Cues Only Work If They Match What You Stored',
-    body: `When you learned WAVE alongside the cue OCEAN, you didn't just encode "WAVE" — you encoded the entire <strong>OCEAN → WAVE</strong> relationship. The cue becomes woven into the memory trace itself.<br><br>
-    This is the <strong>Encoding Specificity Principle</strong>: cues are only effective if they are <em>congruent</em> with what was present during encoding. A mismatched cue fails because it wasn't part of the original memory trace — it has no connection to that node in the network.<br><br>
-    Brain imaging confirms this: neural patterns active during <em>successful retrieval overlap</em> with those active during the original learning experience.`
+    title: 'The Cue Must Match What Was Encoded',
+    body: `You probably scored higher when given the <strong>original cue</strong> (OCEAN) than the <strong>mismatched cue</strong> (RIVER) — even though both relate to the target word WAVE.<br><br>
+    This is the <strong>Encoding Specificity Principle</strong> (Tulving & Thomson, 1973). When you encoded OCEAN→WAVE, the cue OCEAN became <em>woven into the memory trace itself</em>. Retrieving with RIVER fails not because RIVER is unrelated to WAVE, but because RIVER wasn't present at encoding — it has no connection to <em>that specific memory trace</em>.<br><br>
+    Real-world implication: studying for an exam in a noisy café and taking it in a silent hall creates a context mismatch. The environmental cues you encoded with the information are no longer present. <em>Match your study context to your test context</em> whenever possible.`
   },
   'priming-implicit': {
-    badge: 'Priming & Implicit Memory',
-    title: 'Your Brain Was Secretly Prepared',
-    body: `At the start of the task, you briefly saw words like DOCTOR, NURSE, and HOSPITAL. Those words pre-activated a semantic cluster in your memory network.<br><br>
-    This is <strong>Semantic Priming</strong>. When related words (MEDICINE, PATIENT) appeared in the main task, your brain processed them faster because their nodes were already partially activated — making the decision easier.<br><br>
-    This operates through <strong>implicit memory</strong> — memory without awareness. You didn't consciously recall those priming words, yet they influenced your behaviour. The lexical decision task is used in research precisely because it reveals memory traces people have no conscious access to.`
+    badge: 'Semantic Priming',
+    title: 'Hidden Words Pre-Loaded Your Brain',
+    body: `Before the task, you saw: <strong>DOCTOR, NURSE, HOSPITAL, MEDICINE, PATIENT</strong>. You may have forgotten them by the time you were deciding words — but your brain hadn't.<br><br>
+    This is <strong>Semantic Priming</strong>. Those medical words activated a cluster of related nodes in your memory network. When words like HEALTH, CLINIC, and SURGEON appeared, their nodes were already partially activated — making recognition faster. Unrelated words like GUITAR and ROCKET got no such boost.<br><br>
+    This is <strong>implicit memory</strong> — memory that operates without conscious awareness. You didn't try to remember the prime words, yet they shaped your performance. Researchers use this technique to study memory traces that people have no conscious access to. The priming effect occurs even when primes are shown too briefly to consciously perceive — <em>your brain is always processing more than you think.</em>`
   },
   'illusion-truth': {
     badge: 'Illusion of Truth',
-    title: 'Familiarity Feels Like Truth',
-    body: `Some statements appeared twice — once during reading, once during rating. Research consistently finds that <strong>repeated statements are rated as more true</strong>, even when false — and even when people are explicitly warned about the effect.<br><br>
-    This is the <strong>Illusion of Truth Effect</strong>. Seeing a statement twice increases its <em>processing fluency</em> — it feels easier to process, and our brains interpret that ease as a signal of credibility.<br><br>
-    Real-world implications: this mechanism underlies misinformation, propaganda, and why repeated political slogans shift beliefs regardless of accuracy. You experienced exactly why "repeat a lie often enough" works — not because we forget it's false, but because <em>familiarity itself generates a feeling of truth</em>.`
+    title: 'Familiarity Creates a Feeling of Truth',
+    body: `Here's the reveal: in Phase 1, you rated some statements for "interest." That was actually an <strong>encoding task in disguise</strong>. In Phase 3, you rated some of those same statements for truth — mixed with statements you'd never seen.<br><br>
+    Research consistently shows that <strong>previously seen statements are rated as more true</strong>, even when they're false — and even when participants are warned about the effect beforehand.<br><br>
+    This is the <strong>Illusion of Truth Effect</strong>. Seeing a statement before increases its <em>processing fluency</em> — it feels easier to read. Our brains interpret that ease as a signal of credibility, confusing familiarity with truth.<br><br>
+    The implications are serious: this mechanism underlies propaganda, misinformation, and why political slogans shift beliefs through repetition alone. You don't need to consciously remember seeing something for it to feel more true. <em>Exposure itself is the manipulation.</em>`
   }
 };
 
@@ -1052,86 +1071,72 @@ let gs = {};
 function startGame(gameId) {
   gs = { gameId, data: GAMES[gameId].data };
   showScreen('game-screen');
-  ({ 'word-web': renderWordWeb, 'recall-recog': renderRecallRecog,
-     'room-shift': renderRoomShift, 'encoding-cues': renderEncodingCues,
-     'lexical-decision': renderLexicalDecision, 'illusion-truth': renderIllusionTruth })[gameId]();
+  ({ 'memory-curve': renderMemoryCurve, 'recall-recog': renderRecallRecog,
+     'depth-dive': renderDepthDive, 'cue-match': renderCueMatch,
+     'priming-lab': renderPrimingLab, 'illusion-truth': renderIllusionTruth })[gameId]();
 }
 
 function gc() { return document.getElementById('game-container'); }
 
 // ════════════════════════════════════════════════════
-// GAME 1 — WORD WEB
+// GAME 1 — MEMORY CURVE (Serial Position Effect)
 // ════════════════════════════════════════════════════
-function renderWordWeb() {
-  const { center, related, unrelated } = gs.data;
-  const nodes = [...related.slice(0,4), ...unrelated.slice(0,4)].sort(() => Math.random()-0.5);
-  gs.webNodes = nodes;
-  gs.webRelated = new Set(related);
-  gs.activated = new Set();
-  gs.clicks = 0;
-  gs.relatedFound = 0;
-  const MAX = 6;
+function renderMemoryCurve() {
+  gs.mcWords = [...gs.data.words];
+  gs.mcRecalled = [];
+  gs.mcIdx = 0;
+  mcStudy();
+}
 
+function mcStudy() {
+  if (gs.mcIdx >= gs.mcWords.length) { mcRecallPhase(); return; }
+  const word = gs.mcWords[gs.mcIdx];
+  const pos = gs.mcIdx + 1;
+  const total = gs.mcWords.length;
+  gc().innerHTML = `
+    <div class="animate-in" style="text-align:center;">
+      <div class="game-title">🎯 Memory Curve</div>
+      <div class="game-subtitle">Study each word as it appears. Try to remember as many as you can!</div>
+      <div style="display:flex;gap:4px;justify-content:center;margin:1.2rem 0;">
+        ${gs.mcWords.map((_,i) => `<div style="width:18px;height:7px;border-radius:4px;background:${i<pos?'var(--accent)':'rgba(122,72,40,0.15)'};transition:background 0.3s;"></div>`).join('')}
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:2rem;">Word ${pos} of ${total}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:0.06em;margin:2rem 0 3rem;color:var(--text);animation:correctPop 0.3s ease;">${word}</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);font-style:italic;">Memorise it…</div>
+    </div>`;
+  gs.mcIdx++;
+  gs.mcTimer = setTimeout(mcStudy, 1600);
+}
+
+function mcRecallPhase() {
   gc().innerHTML = `
     <div class="animate-in">
-      <div class="game-title">🕸️ Word Web</div>
-      <div class="game-subtitle">The center word is shown. Click the words you think are <strong>most strongly associated</strong> with it. You get ${MAX} clicks.</div>
-      <div style="position:relative;width:320px;height:320px;margin:0 auto 1.5rem;">
-        <canvas id="wc" width="320" height="320" style="position:absolute;top:0;left:0;"></canvas>
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:var(--accent2);color:#fff8f0;font-family:'Syne',sans-serif;font-weight:800;font-size:0.9rem;display:flex;align-items:center;justify-content:center;z-index:3;text-align:center;">${center}</div>
-        <div id="outer-nodes"></div>
-      </div>
-      <div id="ww-fb" style="font-size:1rem;min-height:1.5rem;margin-bottom:0.5rem;font-style:italic;"></div>
-      <div class="progress-text" id="ww-prog">${MAX} clicks remaining</div>
+      <div class="game-title">🎯 Now Recall!</div>
+      <div class="game-subtitle">Type every word you can remember from the list. Press <strong>Enter</strong> after each one — any order is fine.</div>
+      <input class="input-field" id="mc-in" placeholder="Type a word and press Enter…" autocomplete="off" spellcheck="false"/>
+      <div id="mc-list" class="study-list" style="min-height:60px;margin-top:1rem;"></div>
+      <button class="btn-primary" onclick="finishMC()" style="margin-top:1.5rem;">I'm done recalling →</button>
     </div>`;
-
-  const outerDiv = document.getElementById('outer-nodes');
-  const cx=160, cy=160, r=120;
-  nodes.forEach((word, i) => {
-    const angle = (i/nodes.length)*2*Math.PI - Math.PI/2;
-    const x = cx + r*Math.cos(angle), y = cy + r*Math.sin(angle);
-    const el = document.createElement('div');
-    el.style.cssText = `position:absolute;width:60px;height:60px;border-radius:50%;background:#f7f2e8;border:2px solid rgba(122,72,40,0.2);color:var(--text);font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:600;display:flex;align-items:center;justify-content:center;z-index:3;text-align:center;cursor:pointer;transition:all 0.4s;left:${x-30}px;top:${y-30}px;letter-spacing:0.03em;`;
-    el.textContent = word;
-    el.onclick = () => clickWWNode(el, word);
-    outerDiv.appendChild(el);
-  });
-  drawWWLines();
-}
-
-function drawWWLines() {
-  const canvas = document.getElementById('wc');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,320,320);
-  const cx=160, cy=160, r=120;
-  gs.webNodes.forEach((word, i) => {
-    const angle = (i/gs.webNodes.length)*2*Math.PI - Math.PI/2;
-    const x = cx+r*Math.cos(angle), y = cy+r*Math.sin(angle);
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y);
-    ctx.strokeStyle = gs.activated.has(word) ? 'rgba(196,120,58,0.55)' : 'rgba(122,72,40,0.1)';
-    ctx.lineWidth = gs.activated.has(word) ? 2.5 : 1;
-    ctx.stroke();
+  const inp = document.getElementById('mc-in');
+  inp.focus();
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const v = e.target.value.trim().toUpperCase();
+      if (v && !gs.mcRecalled.includes(v)) {
+        gs.mcRecalled.push(v);
+        const ok = gs.mcWords.includes(v);
+        document.getElementById('mc-list').innerHTML += `<div class="study-word ${ok?'highlight':''}">${v}${ok?' ✓':''}</div>`;
+      }
+      e.target.value = '';
+    }
   });
 }
 
-function clickWWNode(el, word) {
-  if (gs.activated.has(word) || gs.clicks >= 6) return;
-  gs.activated.add(word); gs.clicks++;
-  const isRelated = gs.webRelated.has(word);
-  if (isRelated) {
-    el.style.background = 'rgba(196,120,58,0.2)'; el.style.borderColor='#c4783a';
-    el.style.boxShadow = '0 0 20px rgba(196,120,58,0.3)'; el.style.transform='scale(1.1)';
-    document.getElementById('ww-fb').innerHTML = `<span style="color:#7a4828">✓ "${word}" — strongly connected!</span>`;
-    gs.relatedFound++;
-  } else {
-    el.style.background='rgba(100,100,100,0.25)'; el.style.borderColor='rgba(255,255,255,0.15)';
-    document.getElementById('ww-fb').innerHTML = `<span style="color:var(--text-dim)">"${word}" — weaker association</span>`;
-  }
-  drawWWLines();
-  const rem = 6 - gs.clicks;
-  document.getElementById('ww-prog').textContent = rem > 0 ? `${rem} clicks remaining` : '';
-  if (gs.clicks >= 6) setTimeout(() => endGame('word-web', { found: gs.relatedFound, total: 4 }), 700);
+function finishMC() {
+  const recalledSet = new Set(gs.mcRecalled);
+  const hits = gs.mcWords.map(w => recalledSet.has(w));
+  const totalCorrect = hits.filter(Boolean).length;
+  endGame('memory-curve', { hits, totalCorrect, total: gs.mcWords.length });
 }
 
 // ════════════════════════════════════════════════════
@@ -1224,348 +1229,460 @@ function finishRecog() {
 }
 
 // ════════════════════════════════════════════════════
-// GAME 3 — ROOM SHIFT
+// GAME 3 — DEPTH DIVE (Levels of Processing)
 // ════════════════════════════════════════════════════
-function renderRoomShift() {
-  gs.phase=0; gs.sameRoom=Math.random()>0.5; gs.roomRecalled=[];
-  rsPhase();
+function renderDepthDive() {
+  gs.ddItems = [...gs.data.items].sort(() => Math.random()-0.5);
+  gs.ddIdx = 0;
+  gs.ddAnswers = [];
+  gs.ddRecalled = [];
+  ddEncodingPhase();
 }
 
-function rsPhase() {
-  const { studyWords } = gs.data;
-  if (gs.phase===0) {
-    let t=12;
-    gc().innerHTML = `
-      <div class="animate-in">
-        <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div></div>
-        <div class="game-title">🚪 The Room Shift</div>
-        <div class="room-display room-a">
-          <div class="room-label">🌿 Room A — Forest Study Room</div>
-          <div class="study-list" style="margin:0;">${studyWords.map(w=>`<div class="study-word">${w}</div>`).join('')}</div>
-        </div>
-        <div class="game-subtitle">Memorise these words. You're in the <strong>Forest Room</strong>. <strong id="rs-t">${t}s</strong> remaining.</div>
-      </div>`;
-    const iv = setInterval(() => {
-      t--; const el=document.getElementById('rs-t'); if(el) el.textContent=`${t}s`;
-      if(t<=0){ clearInterval(iv); gs.phase=1; rsPhase(); }
-    }, 1000);
+function ddEncodingPhase() {
+  if (gs.ddIdx >= gs.ddItems.length) { ddRecallPhase(); return; }
+  const item = gs.ddItems[gs.ddIdx];
+  const pos = gs.ddIdx + 1;
+  const total = gs.ddItems.length;
+  const typeLabel = { structural:'🔲 Surface Level', phonological:'🔊 Sound Level', semantic:'💡 Meaning Level' }[item.type];
+  gc().innerHTML = `
+    <div class="animate-in" style="text-align:center;">
+      <div class="phase-indicator">${[...Array(total)].map((_,i)=>`<div class="phase-dot ${i<pos?'done':i===pos-1?'active':''}"></div>`).join('')}</div>
+      <div class="game-title">🔬 Depth Dive</div>
+      <div style="display:inline-block;padding:0.3rem 0.9rem;border-radius:100px;font-size:0.72rem;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:0.08em;background:rgba(122,72,40,0.1);color:var(--accent);margin-bottom:1.2rem;">${typeLabel}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;letter-spacing:0.06em;margin:1.5rem 0;color:var(--text);">${item.word}</div>
+      <div class="game-subtitle" style="margin-bottom:1.5rem;">${item.q}</div>
+      <div style="display:flex;gap:1rem;justify-content:center;">
+        <button class="btn-primary" onclick="ddAnswer(true)">YES</button>
+        <button class="btn-secondary" onclick="ddAnswer(false)">NO</button>
+      </div>
+      <div style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-dim);font-style:italic;">${pos} of ${total}</div>
+    </div>`;
+}
 
-  } else {
-    const rClass = gs.sameRoom ? 'room-a' : 'room-b';
-    const rLabel = gs.sameRoom ? '🌿 Room A — Forest Study Room (same room!)' : '🍂 Room B — Autumn Test Room (different room!)';
-    const rNote  = gs.sameRoom ? "You're back in the same room you studied in." : "You've been moved to a completely different room.";
-    gc().innerHTML = `
-      <div class="animate-in">
-        <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div></div>
-        <div class="game-title">Phase 2: Recall</div>
-        <div class="room-display ${rClass}" style="padding:1rem 2rem;margin-bottom:1rem;">
-          <div class="room-label">${rLabel}</div>
-          <div style="font-size:0.85rem;font-style:italic;">${rNote}</div>
-        </div>
-        <div class="game-subtitle">Type as many words as you can remember. Press Enter after each.</div>
-        <input class="input-field" id="rs-in" placeholder="Type a word and press Enter…" autocomplete="off"/>
-        <div id="rs-list" class="study-list" style="min-height:50px;"></div>
-        <br>
-        <button class="btn-primary" onclick="finishRS()">Done →</button>
-      </div>`;
-    const inp=document.getElementById('rs-in'); inp.focus();
-    inp.addEventListener('keydown', e => {
-      if(e.key==='Enter'){
-        const v=e.target.value.trim().toUpperCase();
-        if(v && !gs.roomRecalled.includes(v)){
-          gs.roomRecalled.push(v);
-          document.getElementById('rs-list').innerHTML+=`<div class="study-word ${studyWords.includes(v)?'highlight':''}">${v}</div>`;
-        }
-        e.target.value='';
+function ddAnswer(ans) {
+  gs.ddAnswers.push({ ...gs.ddItems[gs.ddIdx], userAns: ans });
+  gs.ddIdx++;
+  ddEncodingPhase();
+}
+
+function ddRecallPhase() {
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="game-title">🔬 Surprise Recall!</div>
+      <div class="game-subtitle">Now try to recall as many words from the questions as you can. You weren't told you'd be tested — type what comes to mind!</div>
+      <input class="input-field" id="dd-in" placeholder="Type a word and press Enter…" autocomplete="off" spellcheck="false"/>
+      <div id="dd-list" class="study-list" style="min-height:60px;margin-top:1rem;"></div>
+      <button class="btn-primary" onclick="finishDD()" style="margin-top:1.5rem;">Done recalling →</button>
+    </div>`;
+  const inp = document.getElementById('dd-in');
+  inp.focus();
+  const allWords = gs.ddItems.map(i => i.word);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const v = e.target.value.trim().toUpperCase();
+      if (v && !gs.ddRecalled.includes(v)) {
+        gs.ddRecalled.push(v);
+        const ok = allWords.includes(v);
+        document.getElementById('dd-list').innerHTML += `<div class="study-word ${ok?'highlight':''}">${v}${ok?' ✓':''}</div>`;
       }
-    });
-  }
-}
-
-function finishRS() {
-  const { studyWords } = gs.data;
-  const correct = gs.roomRecalled.filter(w=>studyWords.includes(w)).length;
-  endGame('room-shift', { correct, total:studyWords.length, sameRoom:gs.sameRoom });
-}
-
-// ════════════════════════════════════════════════════
-// GAME 4 — ENCODING CUES
-// ════════════════════════════════════════════════════
-function renderEncodingCues() {
-  gs.phase=0; gs.ecIdx=0; gs.withCueOK=0; gs.noCueOK=0;
-  gs.withCuePairs=[...gs.data.pairs].sort(()=>Math.random()-0.5);
-  gs.noCuePairs  =[...gs.data.pairs].sort(()=>Math.random()-0.5);
-  ecPhase();
-}
-
-function ecPhase() {
-  const { pairs } = gs.data;
-  if (gs.phase===0) {
-    let t=15;
-    gc().innerHTML = `
-      <div class="animate-in">
-        <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div><div class="phase-dot"></div></div>
-        <div class="game-title">🔑 Cue &amp; Retrieve</div>
-        <div class="game-subtitle">Study these word <strong>pairs</strong>. Remember both words together! <strong id="ec-t">${t}s</strong></div>
-        <div style="display:flex;flex-direction:column;gap:0.6rem;margin:1.5rem 0;">
-          ${pairs.map(p=>`
-            <div style="display:flex;align-items:center;justify-content:center;gap:1rem;background:var(--card-bg);border-radius:10px;padding:0.75rem 1.5rem;border:1px solid rgba(122,184,138,0.08);">
-              <span style="color:var(--text-dim);font-size:1rem;font-weight:600;min-width:70px;text-align:right;font-style:italic;">${p.cue}</span>
-              <span style="color:rgba(255,255,255,0.25);font-size:1.2rem;">→</span>
-              <span style="color:var(--gold);font-size:1rem;font-weight:700;min-width:70px;font-family:'Syne',sans-serif;">${p.target}</span>
-            </div>`).join('')}
-        </div>
-      </div>`;
-    const iv=setInterval(()=>{ t--; const el=document.getElementById('ec-t'); if(el)el.textContent=`${t}s`; if(t<=0){clearInterval(iv);gs.phase=1;gs.ecIdx=0;ecPhase();} },1000);
-
-  } else {
-    const withCue = gs.phase===1;
-    const list = withCue ? gs.withCuePairs : gs.noCuePairs;
-    if (gs.ecIdx >= list.length) {
-      if (gs.phase===1){ gs.phase=2; gs.ecIdx=0; ecPhase(); } else { endGame('encoding-cues',{withCue:gs.withCueOK,noCue:gs.noCueOK,total:pairs.length}); }
-      return;
+      e.target.value = '';
     }
-    const pair = list[gs.ecIdx];
-    const opts = genOpts(pair.target, pairs.map(p=>p.target));
-    gc().innerHTML = `
-      <div class="animate-in">
-        <div class="phase-indicator">
-          <div class="phase-dot done"></div>
-          <div class="phase-dot ${gs.phase===1?'active':'done'}"></div>
-          <div class="phase-dot ${gs.phase===2?'active':''}"></div>
-        </div>
-        <div class="game-title">${withCue?'Phase 2: With Cue':'Phase 3: Without Cue'}</div>
-        <div class="game-subtitle">${withCue
-          ? `Given the <strong>original cue</strong> — what was the paired word?`
-          : `No cue this time. What was the word that completed this pair?`}</div>
-        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;margin:2rem 0;color:var(--text-dim);">
-          ${withCue ? `${pair.cue} → <span style="color:var(--gold)">???</span>` : `??? → <span style="color:rgba(255,255,255,0.25)">????</span>`}
-        </div>
-        <div class="options-grid">${opts.map(o=>`<button class="option-btn" onclick="ecAnswer('${o}','${pair.target}')">${o}</button>`).join('')}</div>
-        <div class="progress-text">${gs.ecIdx+1} / ${list.length}</div>
-      </div>`;
-  }
+  });
 }
 
-function genOpts(correct, allTargets) {
+function finishDD() {
+  const recalledSet = new Set(gs.ddRecalled);
+  let structural=0, phonological=0, semantic=0;
+  let sTotal=0, pTotal=0, mTotal=0;
+  gs.ddItems.forEach(item => {
+    const got = recalledSet.has(item.word) ? 1 : 0;
+    if (item.type==='structural')   { structural+=got;   sTotal++; }
+    if (item.type==='phonological') { phonological+=got; pTotal++; }
+    if (item.type==='semantic')     { semantic+=got;     mTotal++; }
+  });
+  endGame('depth-dive', { structural, phonological, semantic, sTotal, pTotal, mTotal });
+}
+
+// ════════════════════════════════════════════════════
+// GAME 4 — CUE MATCH (Encoding Specificity)
+// ════════════════════════════════════════════════════
+function renderCueMatch() {
+  const { pairs } = gs.data;
+  gs.cmPhase = 0;
+  gs.cmIdx = 0;
+  gs.cmOriginalOK = 0;
+  gs.cmMismatchOK = 0;
+  // Split pairs: first 3 tested with original cue, last 3 with mismatch cue
+  const shuffled = [...pairs].sort(() => Math.random()-0.5);
+  gs.cmOriginalPairs = shuffled.slice(0,3);
+  gs.cmMismatchPairs = shuffled.slice(3,6);
+  cmStudyPhase();
+}
+
+function cmStudyPhase() {
+  const { pairs } = gs.data;
+  let t = 18;
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div><div class="phase-dot"></div></div>
+      <div class="game-title">🔑 Cue Match</div>
+      <div class="game-subtitle">Study these word <strong>pairs</strong> carefully — remember which cue goes with which word. <strong id="cm-t">${t}s</strong></div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;margin:1.5rem 0;">
+        ${pairs.map(p=>`
+          <div style="display:flex;align-items:center;justify-content:center;gap:0.8rem;background:var(--card-bg);border-radius:10px;padding:0.7rem 1.4rem;border:1px solid rgba(122,72,40,0.12);">
+            <span style="color:var(--accent2);font-size:1rem;font-weight:700;min-width:70px;text-align:right;font-family:'Syne',sans-serif;">${p.cue}</span>
+            <span style="color:var(--text-dim);font-size:1.1rem;">→</span>
+            <span style="color:var(--text);font-size:1rem;font-weight:600;min-width:70px;">${p.target}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  const iv = setInterval(() => {
+    t--; const el = document.getElementById('cm-t');
+    if (el) el.textContent = `${t}s`;
+    if (t <= 0) { clearInterval(iv); gs.cmPhase = 1; gs.cmIdx = 0; cmTestPhase(); }
+  }, 1000);
+}
+
+function cmTestPhase() {
+  const isOriginal = gs.cmPhase === 1;
+  const list = isOriginal ? gs.cmOriginalPairs : gs.cmMismatchPairs;
+  if (gs.cmIdx >= list.length) {
+    if (isOriginal) { gs.cmPhase = 2; gs.cmIdx = 0; cmTestPhase(); }
+    else endGame('cue-match', { original: gs.cmOriginalOK, mismatch: gs.cmMismatchOK, total: 3 });
+    return;
+  }
+  const pair = list[gs.cmIdx];
+  const cueWord = isOriginal ? pair.cue : pair.mismatch;
+  const allTargets = gs.data.pairs.map(p => p.target);
+  const opts = cmGenOpts(pair.target, allTargets);
+  gc().innerHTML = `
+    <div class="animate-in">
+      <div class="phase-indicator">
+        <div class="phase-dot done"></div>
+        <div class="phase-dot ${isOriginal?'active':'done'}"></div>
+        <div class="phase-dot ${!isOriginal?'active':''}"></div>
+      </div>
+      <div class="game-title">${isOriginal ? 'Phase 2: Original Cue' : 'Phase 3: Different Cue'}</div>
+      <div class="game-subtitle">
+        ${isOriginal
+          ? `You're given the <strong>exact cue you studied</strong>. What was the paired word?`
+          : `You're given a <strong>different but related cue</strong>. What was the paired word?`}
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:0.6rem;font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin:1.8rem 0;padding:0.7rem 1.4rem;border-radius:12px;background:${isOriginal?'rgba(122,72,40,0.1)':'rgba(196,120,58,0.12)'};">
+        <span style="color:${isOriginal?'var(--accent)':'var(--accent2)'};">${cueWord}</span>
+        <span style="color:var(--text-dim);">→</span>
+        <span style="color:var(--text-dim);">???</span>
+      </div>
+      ${!isOriginal ? `<div style="font-size:0.78rem;color:var(--accent2);margin-bottom:1rem;font-style:italic;">⚠ Note: <em>${cueWord}</em> was not the cue you studied with this word</div>` : ''}
+      <div class="options-grid">${opts.map(o=>`<button class="option-btn" onclick="cmAnswer('${o}','${pair.target}')">${o}</button>`).join('')}</div>
+      <div class="progress-text">${gs.cmIdx+1} / ${list.length}</div>
+    </div>`;
+}
+
+function cmGenOpts(correct, allTargets) {
   const others = allTargets.filter(t=>t!==correct).sort(()=>Math.random()-0.5).slice(0,3);
   return [correct,...others].sort(()=>Math.random()-0.5);
 }
 
-function ecAnswer(chosen, correct) {
-  if (gs.phase===1 && chosen===correct) gs.withCueOK++;
-  if (gs.phase===2 && chosen===correct) gs.noCueOK++;
-  document.querySelectorAll('.option-btn').forEach(b=>{
-    if(b.textContent===correct) b.classList.add('correct');
-    else if(b.textContent===chosen) b.classList.add('wrong');
+function cmAnswer(chosen, correct) {
+  const isOriginal = gs.cmPhase === 1;
+  if (isOriginal && chosen === correct) gs.cmOriginalOK++;
+  if (!isOriginal && chosen === correct) gs.cmMismatchOK++;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    if (b.textContent === correct) b.classList.add('correct');
+    else if (b.textContent === chosen) b.classList.add('wrong');
   });
-  gs.ecIdx++;
-  setTimeout(ecPhase, 600);
+  gs.cmIdx++;
+  setTimeout(cmTestPhase, 700);
 }
 
 // ════════════════════════════════════════════════════
-// GAME 5 — LEXICAL DECISION
+// GAME 5 — PRIMING LAB (Semantic Priming)
 // ════════════════════════════════════════════════════
-function renderLexicalDecision() {
-  const { primed, relatedTargets, unrelatedTargets, nonwords } = gs.data;
-  gs.ldSeq = [
-    ...relatedTargets.map(w=>({word:w,isWord:true,primed:true})),
-    ...unrelatedTargets.map(w=>({word:w,isWord:true,primed:false})),
+function renderPrimingLab() {
+  const { primeWords, primed, unprimed, nonwords } = gs.data;
+  gs.plSeq = [
+    ...primed.map(w=>({word:w,isWord:true,primed:true})),
+    ...unprimed.map(w=>({word:w,isWord:true,primed:false})),
     ...nonwords.map(w=>({word:w,isWord:false,primed:false}))
   ].sort(()=>Math.random()-0.5);
-  gs.ldIdx=0; gs.ldResults=[]; gs.ldT={};
+  gs.plIdx = 0; gs.plResults = []; gs.plT = {};
 
   gc().innerHTML = `
     <div class="animate-in" style="text-align:center;">
-      <div class="game-title">⚡ Lexical Decision</div>
-      <div class="game-subtitle">You'll briefly see some words. Then for each item shown, press <strong style="color:#7ab88a">WORD</strong> or <strong style="color:#d4826a">NOT A WORD</strong> — as fast as possible!</div>
-      <br>
-      <div id="ld-prime-area" style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:0.15em;min-height:5rem;display:flex;align-items:center;justify-content:center;"></div>
-      <br>
-      <button class="btn-primary" onclick="startLDPrime()">Start →</button>
+      <div class="game-title">⚡ Priming Lab</div>
+      <div class="game-subtitle">First, a quick flash of words. Read them as they appear — then you'll do a reaction task.</div>
+      <div style="margin:2rem 0 1rem;">
+        <div style="font-size:0.8rem;color:var(--text-dim);font-style:italic;margin-bottom:1.2rem;">Words will appear briefly — try to read each one</div>
+        <div id="pl-prime-area" style="font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;letter-spacing:0.1em;min-height:5rem;display:flex;align-items:center;justify-content:center;color:var(--accent);"></div>
+      </div>
+      <button class="btn-primary" onclick="startPLPrime()">Begin Flash →</button>
     </div>`;
 }
 
-function startLDPrime() {
-  const { primed } = gs.data;
-  const area = document.getElementById('ld-prime-area');
-  let i=0;
+function startPLPrime() {
+  const { primeWords } = gs.data;
+  const area = document.getElementById('pl-prime-area');
+  let i = 0;
+  const btn = document.querySelector('.btn-primary');
+  if (btn) btn.style.display = 'none';
   function next() {
-    if(i>=primed.length){ setTimeout(ldTrial,500); return; }
-    if(area){ area.textContent=primed[i]; area.style.opacity='1'; }
-    setTimeout(()=>{ if(area)area.style.opacity='0'; setTimeout(()=>{i++;next();},200); },350);
+    if (i >= primeWords.length) { setTimeout(plTrial, 600); return; }
+    if (area) { area.textContent = primeWords[i]; area.style.opacity = '1'; }
+    setTimeout(() => {
+      if (area) { area.style.opacity = '0'; }
+      setTimeout(() => { i++; next(); }, 300);
+    }, 600);
   }
   next();
 }
 
-function ldTrial() {
-  if(gs.ldIdx>=gs.ldSeq.length){ finishLD(); return; }
-  const item=gs.ldSeq[gs.ldIdx];
+function plTrial() {
+  if (gs.plIdx >= gs.plSeq.length) { finishPL(); return; }
+  const item = gs.plSeq[gs.plIdx];
   gc().innerHTML = `
     <div style="text-align:center;">
-      <div class="progress-text">${gs.ldIdx+1} / ${gs.ldSeq.length}</div>
-      <div class="timer-bar"><div class="timer-fill" id="ld-tf" style="width:100%"></div></div>
-      <div class="feedback-flash" id="ld-fb"></div>
+      <div class="progress-text">${gs.plIdx+1} of ${gs.plSeq.length}</div>
+      <div class="timer-bar"><div class="timer-fill" id="pl-tf" style="width:100%"></div></div>
+      <div class="feedback-flash" id="pl-fb"></div>
       <div class="lexical-word">${item.word}</div>
       <div class="lexical-btns">
-        <button class="lex-btn lex-btn-word" onclick="submitLD(true)">WORD</button>
-        <button class="lex-btn lex-btn-nonword" onclick="submitLD(false)">NOT A WORD</button>
+        <button class="lex-btn lex-btn-word" onclick="submitPL(true)">✓ REAL WORD</button>
+        <button class="lex-btn lex-btn-nonword" onclick="submitPL(false)">✗ NOT A WORD</button>
       </div>
-      <div style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-dim);font-style:italic;">Respond as fast as you can</div>
+      <div style="margin-top:1.2rem;font-size:0.78rem;color:var(--text-dim);font-style:italic;">Respond as fast as you can!</div>
     </div>`;
-  gs.ldT[gs.ldIdx]=Date.now();
-  let pct=100;
-  gs.ldIv=setInterval(()=>{ pct-=2; const el=document.getElementById('ld-tf'); if(el)el.style.width=pct+'%'; if(pct<=0){clearInterval(gs.ldIv);submitLD(null);} },40);
+  gs.plT[gs.plIdx] = Date.now();
+  let pct = 100;
+  gs.plIv = setInterval(() => {
+    pct -= 2;
+    const el = document.getElementById('pl-tf');
+    if (el) el.style.width = pct + '%';
+    if (pct <= 0) { clearInterval(gs.plIv); submitPL(null); }
+  }, 50);
 }
 
-function submitLD(isWord) {
-  clearInterval(gs.ldIv);
-  const item=gs.ldSeq[gs.ldIdx];
-  const rt=Date.now()-(gs.ldT[gs.ldIdx]||Date.now());
-  const correct=isWord===null?false:isWord===item.isWord;
-  gs.ldResults.push({...item,rt,correct});
-  const fb=document.getElementById('ld-fb');
-  if(fb){ fb.textContent=isWord===null?'⏱ Too slow!':correct?`✓ ${rt}ms`:'✗ Wrong'; fb.className='feedback-flash '+(correct&&isWord!==null?'correct-flash':'wrong-flash'); }
-  gs.ldIdx++;
-  setTimeout(ldTrial,400);
+function submitPL(isWord) {
+  clearInterval(gs.plIv);
+  const item = gs.plSeq[gs.plIdx];
+  const rt = Date.now() - (gs.plT[gs.plIdx] || Date.now());
+  const correct = isWord === null ? false : isWord === item.isWord;
+  gs.plResults.push({...item, rt, correct});
+  const fb = document.getElementById('pl-fb');
+  if (fb) {
+    fb.textContent = isWord === null ? '⏱ Too slow!' : correct ? `✓ ${rt}ms` : '✗ Wrong';
+    fb.className = 'feedback-flash ' + (correct && isWord !== null ? 'correct-flash' : 'wrong-flash');
+  }
+  gs.plIdx++;
+  setTimeout(plTrial, 500);
 }
 
-function finishLD() {
-  const results=gs.ldResults;
-  const pr=results.filter(r=>r.primed&&r.correct&&r.isWord);
-  const ur=results.filter(r=>!r.primed&&r.correct&&r.isWord);
-  const avgP=pr.length?Math.round(pr.reduce((s,r)=>s+r.rt,0)/pr.length):0;
-  const avgU=ur.length?Math.round(ur.reduce((s,r)=>s+r.rt,0)/ur.length):0;
-  endGame('lexical-decision',{avgPrimed:avgP,avgUnprimed:avgU});
+function finishPL() {
+  const results = gs.plResults;
+  const pr = results.filter(r => r.primed && r.correct && r.isWord);
+  const ur = results.filter(r => !r.primed && r.correct && r.isWord);
+  const avgP = pr.length ? Math.round(pr.reduce((s,r) => s+r.rt, 0) / pr.length) : 0;
+  const avgU = ur.length ? Math.round(ur.reduce((s,r) => s+r.rt, 0) / ur.length) : 0;
+  endGame('priming-lab', { avgPrimed:avgP, avgUnprimed:avgU, prCount:pr.length, urCount:ur.length });
 }
 
 // ════════════════════════════════════════════════════
-// GAME 6 — ILLUSION OF TRUTH
+// GAME 6 — ILLUSION OF TRUTH (redesigned)
 // ════════════════════════════════════════════════════
 function renderIllusionTruth() {
-  gs.itRatings={}; gs.itRatingIdx=0;
-  const { statements } = gs.data;
+  const { phase1 } = gs.data;
+  gs.itInterestRatings = {}; // index → rating
+  gs.itTruthRatings = {};   // index → rating (0-3 = seen, 4-7 = new)
+  gs.itTruthIdx = 0;
+
   gc().innerHTML = `
     <div class="animate-in">
-      <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div></div>
+      <div class="phase-indicator"><div class="phase-dot active"></div><div class="phase-dot"></div><div class="phase-dot"></div></div>
       <div class="game-title">🪄 Illusion of Truth</div>
-      <div class="game-subtitle">Read these statements. Rate how <strong>interesting</strong> each sounds (not whether it's true).</div>
-      <div style="display:flex;flex-direction:column;gap:0.75rem;margin:1.5rem 0;max-height:55vh;overflow-y:auto;padding-right:4px;">
-        ${statements.map((s,i)=>`
+      <div class="game-subtitle">Rate how <strong>interesting</strong> each fact sounds to you. Just a curiosity check — no right or wrong answers!</div>
+      <div style="display:flex;flex-direction:column;gap:0.85rem;margin:1.4rem 0;">
+        ${phase1.map((text,i)=>`
           <div class="statement-card">
-            <div>${s.text}</div>
-            <div class="truth-slider">
-              <button class="truth-btn" onclick="rateIt(this)">Not interesting</button>
-              <button class="truth-btn" onclick="rateIt(this)">Somewhat</button>
-              <button class="truth-btn" onclick="rateIt(this)">Interesting</button>
-              <button class="truth-btn" onclick="rateIt(this)">Very interesting</button>
+            <div style="font-size:0.95rem;line-height:1.65;margin-bottom:0.7rem;">${text}</div>
+            <div class="truth-slider" id="int-slider-${i}">
+              <button class="truth-btn" onclick="itRateInterest(${i},1,this)">Not interesting</button>
+              <button class="truth-btn" onclick="itRateInterest(${i},2,this)">Somewhat</button>
+              <button class="truth-btn" onclick="itRateInterest(${i},3,this)">Interesting</button>
+              <button class="truth-btn" onclick="itRateInterest(${i},4,this)">Very interesting</button>
             </div>
           </div>`).join('')}
       </div>
-      <button class="btn-primary" onclick="proceedToTruth()">Continue →</button>
+      <button class="btn-primary" onclick="itProceedToTruth()">Continue →</button>
     </div>`;
 }
 
-function rateIt(el) {
-  el.closest('.truth-slider').querySelectorAll('.truth-btn').forEach(b=>b.classList.remove('selected'));
+function itRateInterest(idx, val, el) {
+  document.querySelectorAll(`#int-slider-${idx} .truth-btn`).forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
+  gs.itInterestRatings[idx] = val;
 }
 
-function proceedToTruth() {
-  const { statements, repeatedIdx } = gs.data;
-  const set=[...statements.map((s,i)=>({...s,idx:i}))];
-  repeatedIdx.forEach(i=>set.push({...statements[i],idx:i,repeated:true}));
-  gs.itSet=set.sort(()=>Math.random()-0.5);
-  gs.itIdx=0;
-  itRating();
+function itProceedToTruth() {
+  // Build the truth-rating sequence: 4 seen + 4 new, shuffled
+  const { phase1, phase2new } = gs.data;
+  const seenItems  = phase1.map((text,i) => ({ text, seen:true, idx:i }));
+  const newItems   = phase2new.map((text,i) => ({ text, seen:false, idx:i+4 }));
+  gs.itTruthSet = [...seenItems, ...newItems].sort(() => Math.random()-0.5);
+  gs.itTruthIdx = 0;
+  gs.itTruthRatings = {};
+  itTruthTrial();
 }
 
-function itRating() {
-  if(gs.itIdx>=gs.itSet.length){ finishIT(); return; }
-  const stmt=gs.itSet[gs.itIdx];
+function itTruthTrial() {
+  if (gs.itTruthIdx >= gs.itTruthSet.length) { finishIT(); return; }
+  const stmt = gs.itTruthSet[gs.itTruthIdx];
+  const total = gs.itTruthSet.length;
   gc().innerHTML = `
     <div class="animate-in">
-      <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div></div>
-      <div class="game-title">Phase 2: Truth Rating</div>
-      <div class="game-subtitle">How <strong>true</strong> does this statement seem?</div>
-      <div class="statement-card" style="margin:2rem 0;">
-        <div style="font-size:1.05rem;line-height:1.7;">"${stmt.text}"</div>
-        <div class="truth-slider" style="margin-top:1.2rem;">
-          <button class="truth-btn" onclick="submitIT(1)">Definitely False</button>
-          <button class="truth-btn" onclick="submitIT(2)">Probably False</button>
-          <button class="truth-btn" onclick="submitIT(3)">Unsure</button>
-          <button class="truth-btn" onclick="submitIT(4)">Probably True</button>
-          <button class="truth-btn" onclick="submitIT(5)">Definitely True</button>
+      <div class="phase-indicator"><div class="phase-dot done"></div><div class="phase-dot active"></div><div class="phase-dot"></div></div>
+      <div class="game-title">How true does this seem?</div>
+      <div class="game-subtitle">Trust your gut — how accurate does this statement feel?</div>
+      <div class="statement-card" style="margin:1.6rem 0;">
+        <div style="font-size:1rem;line-height:1.7;">"${stmt.text}"</div>
+        <div class="truth-slider" style="margin-top:1.1rem;flex-wrap:wrap;">
+          <button class="truth-btn" onclick="submitITTruth(1)">Definitely False</button>
+          <button class="truth-btn" onclick="submitITTruth(2)">Probably False</button>
+          <button class="truth-btn" onclick="submitITTruth(3)">Unsure</button>
+          <button class="truth-btn" onclick="submitITTruth(4)">Probably True</button>
+          <button class="truth-btn" onclick="submitITTruth(5)">Definitely True</button>
         </div>
       </div>
-      <div class="progress-text">${gs.itIdx+1} / ${gs.itSet.length}</div>
+      <div class="progress-text">${gs.itTruthIdx+1} of ${total}</div>
     </div>`;
 }
 
-function submitIT(val) {
-  const stmt=gs.itSet[gs.itIdx];
-  if(!gs.itRatings[stmt.idx]) gs.itRatings[stmt.idx]={first:val};
-  else gs.itRatings[stmt.idx].second=val;
-  gs.itIdx++;
-  setTimeout(itRating,200);
+function submitITTruth(val) {
+  gs.itTruthRatings[gs.itTruthIdx] = { ...gs.itTruthSet[gs.itTruthIdx], rating: val };
+  gs.itTruthIdx++;
+  setTimeout(itTruthTrial, 200);
 }
 
 function finishIT() {
-  const { repeatedIdx } = gs.data;
-  let shift=0, count=0;
-  repeatedIdx.forEach(i=>{ const r=gs.itRatings[i]; if(r&&r.second!==undefined){shift+=(r.second-r.first);count++;} });
-  endGame('illusion-truth',{ avgShift:count?(shift/count).toFixed(1):0 });
+  const seenRatings = Object.values(gs.itTruthRatings).filter(r => r.seen).map(r => r.rating);
+  const newRatings  = Object.values(gs.itTruthRatings).filter(r => !r.seen).map(r => r.rating);
+  const avgSeen = seenRatings.length ? (seenRatings.reduce((a,b)=>a+b,0)/seenRatings.length).toFixed(1) : 0;
+  const avgNew  = newRatings.length  ? (newRatings.reduce((a,b)=>a+b,0)/newRatings.length).toFixed(1) : 0;
+  endGame('illusion-truth', { avgSeen, avgNew, seenRatings, newRatings });
 }
 
 // ════════════════════════════════════════════════════
 // END GAME — RESULTS
 // ════════════════════════════════════════════════════
 function endGame(gameId, scores) {
-  const game=GAMES[gameId], concept=CONCEPTS[game.concept];
-  let scoreHTML='';
+  const game = GAMES[gameId], concept = CONCEPTS[game.concept];
+  let scoreHTML = '';
 
-  if(gameId==='word-web') {
-    scoreHTML=`<div class="results-breakdown">
-      <div class="stat-box"><div class="stat-value">${scores.found}</div><div class="stat-label">Connected words found</div></div>
-      <div class="stat-box"><div class="stat-value">${scores.total}</div><div class="stat-label">Total related words</div></div>
-    </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">Your brain was already pre-loading those connected concepts the moment you saw the centre word.</p>`;
+  if (gameId === 'memory-curve') {
+    const { hits, totalCorrect, total } = scores;
+    const primacyCount = hits.slice(0,3).filter(Boolean).length;
+    const recencyCount = hits.slice(9,12).filter(Boolean).length;
+    const middleCount  = hits.slice(3,9).filter(Boolean).length;
+    const cells = hits.map((h,i) => {
+      const zone = i < 3 ? 'primacy' : i >= 9 ? 'recency' : 'middle';
+      const bg = h ? (zone==='primacy'?'#7a4828':zone==='recency'?'#5a7840':'#c4783a') : 'rgba(122,72,40,0.12)';
+      return `<div title="Word ${i+1}: ${gs.mcWords[i]}${h?' (remembered)':' (forgotten)'}" style="flex:1;height:44px;border-radius:6px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;color:${h?'#fff8f0':'transparent'};cursor:default;transition:all 0.3s;min-width:20px;">${i+1}</div>`;
+    }).join('');
+    scoreHTML = `
+      <div class="results-breakdown">
+        <div class="stat-box"><div class="stat-value">${totalCorrect}/${total}</div><div class="stat-label">Total recalled</div></div>
+        <div class="stat-box"><div class="stat-value">${primacyCount}/3</div><div class="stat-label" style="color:#7a4828;">Primacy (first 3)</div></div>
+        <div class="stat-box"><div class="stat-value">${recencyCount}/3</div><div class="stat-label" style="color:#5a7840;">Recency (last 3)</div></div>
+      </div>
+      <div style="margin:1rem 0 0.5rem;font-size:0.8rem;color:var(--text-dim);">Your memory curve — coloured = remembered:</div>
+      <div style="display:flex;gap:4px;margin-bottom:0.4rem;">${cells}</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-dim);font-style:italic;padding:0 2px;">
+        <span style="color:#7a4828;font-weight:700;">◀ Primacy zone</span>
+        <span>Middle (hardest)</span>
+        <span style="color:#5a7840;font-weight:700;">Recency zone ▶</span>
+      </div>
+      <p style="color:var(--text-dim);font-size:0.88rem;font-style:italic;margin-top:1rem;">${primacyCount+recencyCount > middleCount ? '✓ You remembered more from the edges — the serial position effect is real!' : 'Your memory distribution is unusually even — remarkable!'}</p>`;
 
-  } else if(gameId==='recall-recog') {
-    scoreHTML=`<div class="results-breakdown">
+  } else if (gameId === 'recall-recog') {
+    scoreHTML = `<div class="results-breakdown">
       <div class="stat-box"><div class="stat-value">${scores.recallScore}/8</div><div class="stat-label">Recall score</div></div>
       <div class="stat-box"><div class="stat-value">${scores.recogHits}/8</div><div class="stat-label">Recognition hits</div></div>
       <div class="stat-box"><div class="stat-value">${scores.falseAlarms}</div><div class="stat-label">False alarms</div></div>
     </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.recogHits>scores.recallScore?'✓ Recognition beat recall — exactly as predicted!':'Your recall was impressively strong!'}</p>`;
+    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.recogHits>scores.recallScore?'✓ Recognition beat recall — exactly as predicted by memory research!':'Your free recall was unusually strong!'}</p>`;
 
-  } else if(gameId==='room-shift') {
-    scoreHTML=`<div class="results-breakdown">
-      <div class="stat-box"><div class="stat-value">${scores.correct}/${scores.total}</div><div class="stat-label">Words recalled</div></div>
-      <div class="stat-box"><div class="stat-value">${scores.sameRoom?'Same Room':'Different Room'}</div><div class="stat-label">Your condition</div></div>
-    </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.sameRoom?'You stayed in the same room — environmental cues were there to help your retrieval.':'You were moved to a new room — losing those cues typically makes retrieval harder.'}</p>`;
+  } else if (gameId === 'depth-dive') {
+    const { structural, phonological, semantic, sTotal, pTotal, mTotal } = scores;
+    const pctS = sTotal ? Math.round(structural/sTotal*100) : 0;
+    const pctP = pTotal ? Math.round(phonological/pTotal*100) : 0;
+    const pctM = mTotal ? Math.round(semantic/mTotal*100) : 0;
+    const barRow = (label, pct, color) =>
+      `<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">
+        <div style="width:120px;font-size:0.78rem;font-weight:600;color:var(--text-dim);text-align:right;">${label}</div>
+        <div style="flex:1;background:rgba(122,72,40,0.1);border-radius:100px;height:24px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:${color};border-radius:100px;transition:width 0.8s ease;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:0.72rem;font-weight:700;color:#fff8f0;">${pct}%</span>
+          </div>
+        </div>
+      </div>`;
+    scoreHTML = `
+      <div style="margin:1rem 0;">
+        ${barRow('🔲 Structural', pctS, '#7a5c3a')}
+        ${barRow('🔊 Phonological', pctP, '#c4783a')}
+        ${barRow('💡 Semantic', pctM, '#5a7840')}
+      </div>
+      <p style="color:var(--text-dim);font-size:0.88rem;font-style:italic;">${pctM>=pctP&&pctM>=pctS?'✓ Semantic (meaning-level) processing led to the best memory — exactly as predicted!':pctM<pctS?'Structural processing beat semantic — interesting! Try again to see if the pattern holds.':'Deeper processing helped, as predicted by the theory.'}</p>`;
 
-  } else if(gameId==='encoding-cues') {
-    scoreHTML=`<div class="results-breakdown">
-      <div class="stat-box"><div class="stat-value">${scores.withCue}/${scores.total}</div><div class="stat-label">With cue</div></div>
-      <div class="stat-box"><div class="stat-value">${scores.noCue}/${scores.total}</div><div class="stat-label">Without cue</div></div>
+  } else if (gameId === 'cue-match') {
+    const { original, mismatch, total } = scores;
+    const pctO = Math.round(original/total*100);
+    const pctM = Math.round(mismatch/total*100);
+    scoreHTML = `<div class="results-breakdown">
+      <div class="stat-box"><div class="stat-value">${original}/${total}</div><div class="stat-label" style="color:#7a4828;">Original cue</div></div>
+      <div class="stat-box"><div class="stat-value">${mismatch}/${total}</div><div class="stat-label" style="color:#c4783a;">Mismatched cue</div></div>
     </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.withCue>=scores.noCue?'✓ Cues helped — they matched what you encoded at study time!':'Even without cues your memory held up well — impressive!'}</p>`;
+    <div style="display:flex;gap:0.8rem;margin:0.8rem 0;">
+      <div style="flex:1;background:rgba(122,72,40,0.1);border-radius:100px;height:20px;overflow:hidden;">
+        <div style="width:${pctO}%;height:100%;background:#7a4828;border-radius:100px;"></div>
+      </div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.88rem;font-style:italic;">${original>=mismatch?'✓ The original cue outperformed the mismatch — encoding specificity confirmed!':'Even the mismatched cue helped — your memory traces were strongly formed!'}</p>`;
 
-  } else if(gameId==='lexical-decision') {
-    scoreHTML=`<div class="results-breakdown">
-      <div class="stat-box"><div class="stat-value">${scores.avgPrimed}ms</div><div class="stat-label">Primed words RT</div></div>
-      <div class="stat-box"><div class="stat-value">${scores.avgUnprimed}ms</div><div class="stat-label">Unprimed words RT</div></div>
-    </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${scores.avgPrimed<scores.avgUnprimed?`✓ You were ${scores.avgUnprimed-scores.avgPrimed}ms faster on primed words — implicit memory at work!`:'Priming effects can be subtle, but the activation was happening in your brain regardless!'}</p>`;
+  } else if (gameId === 'priming-lab') {
+    const { avgPrimed, avgUnprimed } = scores;
+    const diff = avgUnprimed - avgPrimed;
+    const maxRT = Math.max(avgPrimed, avgUnprimed, 100);
+    const barRow = (label, val, color) =>
+      `<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">
+        <div style="width:110px;font-size:0.78rem;font-weight:600;color:var(--text-dim);text-align:right;">${label}</div>
+        <div style="flex:1;background:rgba(122,72,40,0.1);border-radius:100px;height:28px;overflow:hidden;">
+          <div style="width:${Math.round(val/maxRT*100)}%;height:100%;background:${color};border-radius:100px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:0.72rem;font-weight:700;color:#fff8f0;">${val}ms</span>
+          </div>
+        </div>
+      </div>`;
+    scoreHTML = `
+      <div style="margin:1rem 0;">
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:0.8rem;">Your average reaction time (shorter = faster):</div>
+        ${barRow('⚡ Primed words', avgPrimed, '#5a7840')}
+        ${barRow('○ Unprimed words', avgUnprimed, '#c4783a')}
+      </div>
+      ${diff>0?`<div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#5a7840;margin:0.5rem 0;">${diff}ms faster on primed words ⚡</div>`:''}
+      <p style="color:var(--text-dim);font-size:0.88rem;font-style:italic;">${diff>0?`✓ You were ${diff}ms faster on words related to DOCTOR/NURSE/HOSPITAL — priming at work!`:'Priming effects can be subtle, but the activation was happening in your brain regardless.'}</p>`;
 
-  } else if(gameId==='illusion-truth') {
-    const sh=parseFloat(scores.avgShift);
-    scoreHTML=`<div class="results-breakdown">
-      <div class="stat-box"><div class="stat-value">${sh>0?'+':''}${scores.avgShift}</div><div class="stat-label">Avg truth rating shift</div></div>
-    </div>
-    <p style="color:var(--text-dim);font-size:0.9rem;font-style:italic;">${sh>0?'✓ Repeated statements felt more true — you experienced the Illusion of Truth!':sh<0?'You rated repeated statements as less true — heightened scepticism!':'Ratings were consistent — but the effect was still operating beneath the surface.'}</p>`;
+  } else if (gameId === 'illusion-truth') {
+    const seenAvg = parseFloat(scores.avgSeen);
+    const newAvg  = parseFloat(scores.avgNew);
+    const diff = (seenAvg - newAvg).toFixed(1);
+    scoreHTML = `
+      <div class="results-breakdown">
+        <div class="stat-box"><div class="stat-value">${scores.avgSeen}/5</div><div class="stat-label">Seen-before statements</div></div>
+        <div class="stat-box"><div class="stat-value">${scores.avgNew}/5</div><div class="stat-label">New statements</div></div>
+      </div>
+      <div style="padding:0.8rem 1rem;border-radius:10px;background:rgba(122,72,40,0.08);margin:0.8rem 0;font-size:0.85rem;">
+        🔍 <strong>The reveal:</strong> in Phase 1, you rated "interesting facts" — but that was secretly the <em>encoding phase</em>. The statements you saw there appeared again in the truth-rating task.
+      </div>
+      <p style="color:var(--text-dim);font-size:0.88rem;font-style:italic;">${seenAvg>newAvg?`✓ Seen-before statements rated +${diff} points more true on average — the Illusion of Truth in your own data!`:'Your truth ratings were resistant to the effect — or the difference will emerge across more trials.'}</p>`;
   }
 
   showScreen('result-screen');
